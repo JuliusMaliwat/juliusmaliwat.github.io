@@ -1,0 +1,10 @@
+---
+// Generic section wrapper with consistent spacing and title styling.
+const { id, title, eyebrow } = Astro.props;
+---
+
+<section id={id}>
+  {eyebrow && <div class="eyebrow">{eyebrow}</div>}
+  {title && <h2>{title}</h2>}
+  <slot />
+</section>

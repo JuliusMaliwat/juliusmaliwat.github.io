@@ -1,0 +1,26 @@
+---
+// Top navigation with active-state highlighting.
+const links = [
+  { label: "Home", href: "/" },
+  { label: "Experience", href: "/experience/" },
+  { label: "Education", href: "/education/" },
+  { label: "Projects", href: "/projects/" },
+  { label: "Contact", href: "/contact/" },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<nav class="nav" aria-label="Main">
+  <a href="/" class="pill">JM</a>
+  <div class="nav-links">
+    {links.map((link) => (
+      <a
+        href={link.href}
+        aria-current={currentPath === link.href ? "page" : undefined}
+      >
+        {link.label}
+      </a>
+    ))}
+  </div>
+</nav>

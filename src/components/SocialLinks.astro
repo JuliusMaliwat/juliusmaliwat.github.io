@@ -1,0 +1,12 @@
+---
+// Renders a horizontal list of social links.
+const { links = [] } = Astro.props;
+---
+
+<div class="nav-links" aria-label="Social links">
+  {links.map((link) => (
+    <a href={link.url} target="_blank" rel="noreferrer">
+      {link.label}
+    </a>
+  ))}
+</div>

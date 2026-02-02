@@ -1,0 +1,51 @@
+---
+// Education page: university studies, thesis, and projects.
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Nav from "../../components/Nav.astro";
+import Footer from "../../components/Footer.astro";
+
+const profileEntry = (await getCollection("profile"))[0];
+const profile = profileEntry?.data;
+const education = await getCollection("education");
+---
+
+<BaseLayout title="Education" description="Education, thesis, and university projects.">
+  <main>
+    <Nav />
+    <h1>Education</h1>
+    <p class="lead">University studies, thesis, and academic projects.</p>
+
+    <div class="stack">
+      {education.map((item) => (
+        <article class="card">
+          <h2>{item.data.degree}</h2>
+          <p class="muted">
+            {item.data.institution} · {item.data.location}
+          </p>
+          <p class="muted">
+            {item.data.startDate} — {item.data.endDate}
+          </p>
+          <p>{item.data.summary}</p>
+          {item.data.thesis && <p><strong>Thesis:</strong> {item.data.thesis}</p>}
+          {item.data.projects?.length && (
+            <ul>
+              {item.data.projects.map((project) => (
+                <li>{project}</li>
+              ))}
+            </ul>
+          )}
+          {item.data.highlights?.length && (
+            <ul>
+              {item.data.highlights.map((highlight) => (
+                <li>{highlight}</li>
+              ))}
+            </ul>
+          )}
+        </article>
+      ))}
+    </div>
+
+    <Footer email={profile?.email} location={profile?.location} links={profile?.links} />
+  </main>
+</BaseLayout>

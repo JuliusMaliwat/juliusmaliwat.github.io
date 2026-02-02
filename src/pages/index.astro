@@ -1,0 +1,115 @@
+---
+// Home page: hero + section previews for experience, education, projects, contact.
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Nav from "../components/Nav.astro";
+import Section from "../components/Section.astro";
+import SocialLinks from "../components/SocialLinks.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import Footer from "../components/Footer.astro";
+
+const profileEntry = (await getCollection("profile"))[0];
+const experience = await getCollection("experience");
+const education = await getCollection("education");
+const projects = await getCollection("projects");
+
+const profile = profileEntry?.data;
+const { Content } = profileEntry ? await profileEntry.render() : { Content: null };
+---
+
+<BaseLayout description={profile?.bioShort}>
+  <main>
+    <Nav />
+
+    <!-- Hero -->
+    <section>
+      <div class="eyebrow">Software Engineer</div>
+      <h1 class="hero-title">{profile?.name ?? "Your Name"}</h1>
+      <p class="lead">{profile?.headline ?? "Your headline goes here."}</p>
+      {profile?.location && <p class="muted">{profile.location}</p>}
+      {profile?.links && <SocialLinks links={profile.links} />}
+    </section>
+
+    <!-- About -->
+    <Section id="about" title="About">
+      {Content ? <Content /> : <p class="muted">Add your bio in `src/content/profile/index.md`.</p>}
+    </Section>
+
+    <!-- Experience -->
+    <Section id="experience" title="Professional Experience">
+      <div class="stack">
+        {experience.map((role) => (
+          <article class="card">
+            <h3>{role.data.role}</h3>
+            <p class="muted">
+              {role.data.company} · {role.data.location}
+            </p>
+            <p class="muted">
+              {role.data.startDate} — {role.data.endDate ?? "Present"}
+            </p>
+            <p>{role.data.summary}</p>
+            {role.data.highlights?.length && (
+              <ul>
+                {role.data.highlights.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            )}
+          </article>
+        ))}
+      </div>
+    </Section>
+
+    <!-- Education -->
+    <Section id="education" title="Education">
+      <div class="stack">
+        {education.map((item) => (
+          <article class="card">
+            <h3>{item.data.degree}</h3>
+            <p class="muted">
+              {item.data.institution} · {item.data.location}
+            </p>
+            <p class="muted">
+              {item.data.startDate} — {item.data.endDate}
+            </p>
+            <p>{item.data.summary}</p>
+            {item.data.thesis && <p><strong>Thesis:</strong> {item.data.thesis}</p>}
+            {item.data.projects?.length && (
+              <ul>
+                {item.data.projects.map((project) => (
+                  <li>{project}</li>
+                ))}
+              </ul>
+            )}
+          </article>
+        ))}
+      </div>
+    </Section>
+
+    <!-- Projects -->
+    <Section id="projects" title="Personal Projects">
+      <div class="grid two">
+        {projects.map((project) => (
+          <ProjectCard project={project} />
+        ))}
+      </div>
+    </Section>
+
+    <!-- Contact -->
+    <Section id="contact" title="Contact">
+      <div class="card">
+        <p>
+          Email:{" "}
+          {profile?.email ? (
+            <a href={`mailto:${profile.email}`}>{profile.email}</a>
+          ) : (
+            <span class="muted">Add your email in `src/content/profile/index.md`.</span>
+          )}
+        </p>
+        {profile?.links && <SocialLinks links={profile.links} />}
+      </div>
+    </Section>
+
+    <Footer email={profile?.email} location={profile?.location} links={profile?.links} />
+  </main>
+</BaseLayout>

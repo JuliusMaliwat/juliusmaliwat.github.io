@@ -1,0 +1,28 @@
+---
+// Minimal footer with contact and location.
+const { email, location, links = [] } = Astro.props;
+---
+
+<footer style="margin-top: 64px;">
+  <div class="card">
+    <div class="stack">
+      <div>
+        <div class="eyebrow">Contact</div>
+        {email && <p><a href={`mailto:${email}`}>{email}</a></p>}
+        {location && <p class="muted">{location}</p>}
+      </div>
+      {links.length > 0 && (
+        <div>
+          <div class="eyebrow">Social</div>
+          <div class="nav-links">
+            {links.map((link) => (
+              <a href={link.url} target="_blank" rel="noreferrer">
+                {link.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </div>
+</footer>
