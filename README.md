@@ -7,6 +7,7 @@ Personal website built with Astro and deployed on GitHub Pages.
 - About Me (combined Experience + Education)
 - Projects
 - Library
+- Fixed contact icons (email + GitHub + LinkedIn) across all pages
 
 ## Stack
 - Astro (static site generator)
@@ -26,6 +27,8 @@ Content lives in `src/content/`:
 - `projects/` for project landing pages
 
 The Home CTAs link to email and `public/cv.pdf`. Replace `public/cv.pdf` with the real CV when ready.
+
+Social links used by the fixed contact icon bar are also defined in `src/content/profile/index.md`.
 
 ## Analytics (optional)
 If you want lightweight analytics, set:

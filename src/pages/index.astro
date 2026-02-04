@@ -3,6 +3,7 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
 
 const profileEntry = (await getCollection("profile"))[0];
 
@@ -24,5 +25,8 @@ const email = profile?.email ?? "juliusmaliwat.work@gmail.com";
         <a class="button ghost" href="/cv.pdf" download>Download CV</a>
       </div>
     </section>
+
+    <!-- Fixed contact icons are rendered by the Footer component. -->
+    <Footer email={profile?.email} links={profile?.links} />
   </main>
 </BaseLayout>
