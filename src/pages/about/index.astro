@@ -1,0 +1,93 @@
+---
+// About Me page: combined CV view (experience + education).
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Nav from "../../components/Nav.astro";
+import Footer from "../../components/Footer.astro";
+
+const profileEntry = (await getCollection("profile"))[0];
+const profile = profileEntry?.data;
+const experience = await getCollection("experience");
+const education = await getCollection("education");
+const { Content } = profileEntry ? await profileEntry.render() : { Content: null };
+---
+
+<BaseLayout title="About Me" description={profile?.bioShort}>
+  <main>
+    <Nav />
+    <h1>About Me</h1>
+    <p class="lead">{profile?.headline ?? "Software Engineer"}</p>
+
+    <section>
+      <h2>Profile</h2>
+      {Content ? <Content /> : <p class="muted">Add your bio in `src/content/profile/index.md`.</p>}
+    </section>
+
+    <section>
+      <h2>Experience</h2>
+      <div class="stack">
+        {experience.map((role) => (
+          <article class="card">
+            <h3>{role.data.role}</h3>
+            <p class="muted">
+              {role.data.company} · {role.data.location}
+            </p>
+            <p class="muted">
+              {role.data.startDate} — {role.data.endDate ?? "Present"}
+            </p>
+            <p>{role.data.summary}</p>
+            {role.data.highlights?.length && (
+              <ul>
+                {role.data.highlights.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            )}
+            {role.data.tech?.length && (
+              <div class="nav-links">
+                {role.data.tech.map((tech) => (
+                  <span class="pill">{tech}</span>
+                ))}
+              </div>
+            )}
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section>
+      <h2>Education</h2>
+      <div class="stack">
+        {education.map((item) => (
+          <article class="card">
+            <h3>{item.data.degree}</h3>
+            <p class="muted">
+              {item.data.institution} · {item.data.location}
+            </p>
+            <p class="muted">
+              {item.data.startDate} — {item.data.endDate}
+            </p>
+            <p>{item.data.summary}</p>
+            {item.data.thesis && <p><strong>Thesis:</strong> {item.data.thesis}</p>}
+            {item.data.projects?.length && (
+              <ul>
+                {item.data.projects.map((project) => (
+                  <li>{project}</li>
+                ))}
+              </ul>
+            )}
+            {item.data.highlights?.length && (
+              <ul>
+                {item.data.highlights.map((highlight) => (
+                  <li>{highlight}</li>
+                ))}
+              </ul>
+            )}
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <Footer email={profile?.email} location={profile?.location} links={profile?.links} />
+  </main>
+</BaseLayout>

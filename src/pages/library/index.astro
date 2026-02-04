@@ -1,0 +1,28 @@
+---
+// Library page: placeholder for curated notes, links, and reading list.
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Nav from "../../components/Nav.astro";
+import Footer from "../../components/Footer.astro";
+import { getCollection } from "astro:content";
+
+const profileEntry = (await getCollection("profile"))[0];
+const profile = profileEntry?.data;
+---
+
+<BaseLayout title="Library" description="A curated library of resources and notes.">
+  <main>
+    <Nav />
+    <h1>Library</h1>
+    <p class="lead">A curated space for links, notes, and references. Coming soon.</p>
+
+    <section>
+      <div class="card">
+        <p class="muted">
+          This section will host reading notes, tools, and resources that inspire my work.
+        </p>
+      </div>
+    </section>
+
+    <Footer email={profile?.email} location={profile?.location} links={profile?.links} />
+  </main>
+</BaseLayout>

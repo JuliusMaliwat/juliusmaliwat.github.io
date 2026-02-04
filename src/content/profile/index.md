@@ -2,7 +2,7 @@
 name: "Julius Maliwat"
 headline: "Software Engineer"
 location: "Milan, Italy"
-email: "your.email@example.com"
+email: "juliusmaliwat.work@gmail.com"
 links:
   - label: "GitHub"
     url: "https://github.com/JuliusMaliwat"

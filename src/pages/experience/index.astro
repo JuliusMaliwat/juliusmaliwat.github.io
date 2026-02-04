@@ -1,50 +1,13 @@
 ---
-// Experience page: full list of professional roles.
-import { getCollection } from "astro:content";
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import Nav from "../../components/Nav.astro";
-import Footer from "../../components/Footer.astro";
-
-const profileEntry = (await getCollection("profile"))[0];
-const profile = profileEntry?.data;
-const experience = await getCollection("experience");
+const redirectTo = "/about/";
 ---
 
-<BaseLayout title="Experience" description="Professional experience and role highlights.">
-  <main>
-    <Nav />
-    <h1>Professional Experience</h1>
-    <p class="lead">A timeline of roles and highlights.</p>
-
-    <div class="stack">
-      {experience.map((role) => (
-        <article class="card">
-          <h2>{role.data.role}</h2>
-          <p class="muted">
-            {role.data.company} · {role.data.location}
-          </p>
-          <p class="muted">
-            {role.data.startDate} — {role.data.endDate ?? "Present"}
-          </p>
-          <p>{role.data.summary}</p>
-          {role.data.highlights?.length && (
-            <ul>
-              {role.data.highlights.map((item) => (
-                <li>{item}</li>
-              ))}
-            </ul>
-          )}
-          {role.data.tech?.length && (
-            <div class="nav-links">
-              {role.data.tech.map((tech) => (
-                <span class="pill">{tech}</span>
-              ))}
-            </div>
-          )}
-        </article>
-      ))}
-    </div>
-
-    <Footer email={profile?.email} location={profile?.location} links={profile?.links} />
-  </main>
-</BaseLayout>
+<html lang="en">
+  <head>
+    <meta http-equiv="refresh" content="0; url=/about/" />
+    <link rel="canonical" href="/about/" />
+  </head>
+  <body>
+    <p>Redirecting to <a href="/about/">About Me</a>...</p>
+  </body>
+</html>
