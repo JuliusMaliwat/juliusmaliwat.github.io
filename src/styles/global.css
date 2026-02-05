@@ -111,11 +111,30 @@ section:last-of-type {
   max-width: 640px;
 }
 
+/* Minimal Home hero layout inspired by the reference example. */
+.home-hero {
+  min-height: 60vh;
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.home-greeting {
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  margin-bottom: 8px;
+}
+
+.home-line {
+  font-size: 1.05rem;
+  margin: 0;
+}
+
 .cta-group {
   margin-top: 24px;
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
+  justify-content: center;
 }
 
 .button {
@@ -189,6 +208,25 @@ section:last-of-type {
   font-size: 0.95rem;
 }
 
+.nav-home {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid transparent;
+}
+
+.nav-home svg {
+  width: 18px;
+  height: 18px;
+}
+
+.nav-home:hover {
+  border-color: var(--border);
+}
+
 .nav-links a[aria-current="page"] {
   color: var(--accent);
 }
@@ -196,6 +234,50 @@ section:last-of-type {
 .grid {
   display: grid;
   gap: 20px;
+}
+
+/* Accordion timeline for Experience/Education. */
+.timeline {
+  display: grid;
+  gap: 16px;
+  border-left: 1px solid var(--border);
+  padding-left: 20px;
+}
+
+.accordion-item {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  background: var(--bg-elev);
+}
+
+.accordion-item::before {
+  content: "";
+  position: absolute;
+  left: -29px;
+  top: 18px;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+.accordion-item summary {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+}
+
+.accordion-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.accordion-body {
+  margin-top: 10px;
 }
 
 /* Fixed contact icon bar pinned to the bottom of the viewport. */

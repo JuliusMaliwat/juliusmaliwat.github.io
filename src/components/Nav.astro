@@ -1,7 +1,6 @@
 ---
 // Top navigation with active-state highlighting.
 const links = [
-  { label: "Home", href: "/" },
   { label: "About Me", href: "/about/" },
   { label: "Projects", href: "/projects/" },
   { label: "Library", href: "/library/" },
@@ -13,6 +12,22 @@ const currentPath = Astro.url.pathname;
 <nav class="nav" aria-label="Main">
   <a href="/" class="pill">JM</a>
   <div class="nav-links">
+    <a
+      href="/"
+      class="nav-home"
+      aria-label="Home"
+      aria-current={currentPath === "/" ? "page" : undefined}
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path
+          d="M3 10.5 12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </a>
     {links.map((link) => (
       <a
         href={link.href}

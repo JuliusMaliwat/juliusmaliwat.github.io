@@ -16,6 +16,8 @@ const profile = defineCollection({
         })
       )
       .optional(),
+    // Optional greeting shown on the Home hero.
+    homeGreeting: z.string().optional(),
     bioShort: z.string(),
   }),
 });
@@ -63,6 +65,8 @@ const projects = defineCollection({
     title: z.string(),
     type: z.enum(["university", "personal", "work-sample"]),
     status: z.enum(["active", "shipped", "archived"]).optional(),
+    // Draft items are hidden from the Projects list.
+    draft: z.boolean().optional(),
     summary: z.string(),
     problem: z.string().optional(),
     solution: z.string().optional(),

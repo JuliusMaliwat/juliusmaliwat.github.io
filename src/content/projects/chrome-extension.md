@@ -2,6 +2,7 @@
 title: "Chrome Extension (Working Title)"
 type: "personal"
 status: "active"
+draft: true
 summary: "A short, clear summary of what the extension does and who it helps."
 problem: "The user pain point or workflow this extension improves."
 solution: "How the extension solves the problem in a clean, simple way."

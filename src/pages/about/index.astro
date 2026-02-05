@@ -1,5 +1,5 @@
 ---
-// About Me page: combined CV view (experience + education).
+// About Me page: combined CV view (experience + education) with accordions.
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Nav from "../../components/Nav.astro";
@@ -25,65 +25,73 @@ const { Content } = profileEntry ? await profileEntry.render() : { Content: null
 
     <section>
       <h2>Experience</h2>
-      <div class="stack">
+      <div class="timeline">
         {experience.map((role) => (
-          <article class="card">
-            <h3>{role.data.role}</h3>
-            <p class="muted">
-              {role.data.company} · {role.data.location}
-            </p>
-            <p class="muted">
-              {role.data.startDate} — {role.data.endDate ?? "Present"}
-            </p>
-            <p>{role.data.summary}</p>
-            {role.data.highlights?.length && (
-              <ul>
-                {role.data.highlights.map((item) => (
-                  <li>{item}</li>
-                ))}
-              </ul>
-            )}
-            {role.data.tech?.length && (
-              <div class="nav-links">
-                {role.data.tech.map((tech) => (
-                  <span class="pill">{tech}</span>
-                ))}
+          <details class="accordion-item">
+            <summary>
+              <div>
+                <strong>{role.data.role}</strong>
+                <div class="muted">
+                  {role.data.company} · {role.data.location}
+                </div>
               </div>
-            )}
-          </article>
+              <span class="muted">{role.data.startDate} — {role.data.endDate ?? "Present"}</span>
+            </summary>
+            <div class="accordion-body">
+              <p>{role.data.summary}</p>
+              {role.data.highlights?.length && (
+                <ul>
+                  {role.data.highlights.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              )}
+              {role.data.tech?.length && (
+                <div class="nav-links">
+                  {role.data.tech.map((tech) => (
+                    <span class="pill">{tech}</span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </details>
         ))}
       </div>
     </section>
 
     <section>
       <h2>Education</h2>
-      <div class="stack">
+      <div class="timeline">
         {education.map((item) => (
-          <article class="card">
-            <h3>{item.data.degree}</h3>
-            <p class="muted">
-              {item.data.institution} · {item.data.location}
-            </p>
-            <p class="muted">
-              {item.data.startDate} — {item.data.endDate}
-            </p>
-            <p>{item.data.summary}</p>
-            {item.data.thesis && <p><strong>Thesis:</strong> {item.data.thesis}</p>}
-            {item.data.projects?.length && (
-              <ul>
-                {item.data.projects.map((project) => (
-                  <li>{project}</li>
-                ))}
-              </ul>
-            )}
-            {item.data.highlights?.length && (
-              <ul>
-                {item.data.highlights.map((highlight) => (
-                  <li>{highlight}</li>
-                ))}
-              </ul>
-            )}
-          </article>
+          <details class="accordion-item">
+            <summary>
+              <div>
+                <strong>{item.data.degree}</strong>
+                <div class="muted">
+                  {item.data.institution} · {item.data.location}
+                </div>
+              </div>
+              <span class="muted">{item.data.startDate} — {item.data.endDate}</span>
+            </summary>
+            <div class="accordion-body">
+              <p>{item.data.summary}</p>
+              {item.data.thesis && <p><strong>Thesis:</strong> {item.data.thesis}</p>}
+              {item.data.projects?.length && (
+                <ul>
+                  {item.data.projects.map((project) => (
+                    <li>{project}</li>
+                  ))}
+                </ul>
+              )}
+              {item.data.highlights?.length && (
+                <ul>
+                  {item.data.highlights.map((highlight) => (
+                    <li>{highlight}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </details>
         ))}
       </div>
     </section>

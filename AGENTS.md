@@ -7,6 +7,7 @@ This repo is a personal website built with Astro and deployed to GitHub Pages vi
 1. `docs/IMPLEMENTATION_PLAN.md` — Initial site scaffold, content collections, core pages, styles, and deploy workflow (plan notes final validation).
 2. `docs/EXECPLAN-SECTION-RESTRUCTURE.md` — Section restructure: Home CTA-only, About Me merges Experience + Education, Library added, redirects for old routes (implemented; validation step remains).
 3. `docs/EXECPLAN-FIXED-CONTACT-ICONS.md` — Replace footer contact card with fixed bottom icon bar (implementation complete; validation pending).
+4. `docs/EXECPLAN-CONTENT-CV-ACCORDIONS.md` — Real CV content, simplified Home, accordions for Experience/Education, empty Projects state (implemented; validation pending).
 
 ## Plan Authoring & Execution Rules
 When the user asks to “build a plan,” create the plan using the template and rules in `PLANS.md` at the repo root. Keep the plan self-contained and follow the formatting constraints in that file exactly.

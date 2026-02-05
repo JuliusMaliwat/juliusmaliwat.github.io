@@ -1,5 +1,5 @@
 ---
-// Home page: short intro + two actions (email + CV download).
+// Home page: minimal hero (greeting + role + education) and two actions.
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Nav from "../components/Nav.astro";
@@ -15,11 +15,10 @@ const email = profile?.email ?? "juliusmaliwat.work@gmail.com";
   <main>
     <Nav />
 
-    <section>
-      <div class="eyebrow">Software Engineer</div>
-      <h1 class="hero-title">{profile?.name ?? "Your Name"}</h1>
-      <p class="lead">{profile?.headline ?? "Your headline goes here."}</p>
-      {profile?.location && <p class="muted">{profile.location}</p>}
+    <section class="home-hero">
+      <h1 class="home-greeting">{profile?.homeGreeting ?? "hello, i'm julius :)"}</h1>
+      <p class="home-line">{profile?.headline ?? "Data Engineer @ Quantyca"}</p>
+      <p class="home-line muted">{profile?.bioShort ?? "MSc Data Science @ University of Bicocca"}</p>
       <div class="cta-group">
         <a class="button" href={`mailto:${email}`}>Get in touch</a>
         <a class="button ghost" href="/cv.pdf" download>Download CV</a>

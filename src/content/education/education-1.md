@@ -1,16 +1,11 @@
 ---
-institution: "Your University"
-degree: "Your Degree"
+institution: "University of Milano-Bicocca"
+degree: "M.Sc in Data Science"
 location: "Milan, Italy"
-startDate: "2019"
-endDate: "2023"
-summary: "Short summary of your studies or focus area."
-thesis: "Thesis title (optional)"
-projects:
-  - "University project 1"
-  - "University project 2"
+startDate: "10/2023"
+endDate: "10/2025"
+summary: "Graduate studies focused on data science and applied machine learning."
+thesis: "Design and Evaluation of Multi-Camera Multi-Object Tracking Pipelines in Calibrated Environments"
 highlights:
-  - "Achievement, award, or notable activity."
+  - "Final mark: 110/110 with honors."
 ---
-
-<!-- Add optional longer details about your education here. -->

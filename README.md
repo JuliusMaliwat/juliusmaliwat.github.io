@@ -26,7 +26,7 @@ Content lives in `src/content/`:
 - `education/` for university studies, thesis, and projects
 - `projects/` for project landing pages
 
-The Home CTAs link to email and `public/cv.pdf`. Replace `public/cv.pdf` with the real CV when ready.
+The Home CTAs link to email and `public/cv.pdf`. Update `public/cv.pdf` whenever the CV changes.
 
 Social links used by the fixed contact icon bar are also defined in `src/content/profile/index.md`.
 

@@ -9,6 +9,7 @@ import ProjectCard from "../../components/ProjectCard.astro";
 const profileEntry = (await getCollection("profile"))[0];
 const profile = profileEntry?.data;
 const projects = await getCollection("projects");
+const visibleProjects = projects.filter((project) => !project.data.draft);
 ---
 
 <BaseLayout title="Projects" description="Personal project landing pages and experiments.">
@@ -17,11 +18,17 @@ const projects = await getCollection("projects");
     <h1>Projects</h1>
     <p class="lead">Landing pages for selected work and experiments.</p>
 
-    <div class="grid two">
-      {projects.map((project) => (
-        <ProjectCard project={project} />
-      ))}
-    </div>
+    {visibleProjects.length === 0 ? (
+      <div class="card">
+        <p class="muted">Projects will be published here soon.</p>
+      </div>
+    ) : (
+      <div class="grid two">
+        {visibleProjects.map((project) => (
+          <ProjectCard project={project} />
+        ))}
+      </div>
+    )}
 
     <Footer email={profile?.email} location={profile?.location} links={profile?.links} />
   </main>

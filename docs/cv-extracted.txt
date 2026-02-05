@@ -1,0 +1,107 @@
+Julius Maliwat
+Data Engineer
+
+WORK EXPERIENCE
+Quantyca, Data Engineer
+06/2025 – Present | Monza, Italy
+Migration of the data platform from AWS to Databricks for
+Autostrade per l’Italia, contributing to the definition of the new
+platform.
+Adopt a declarative approach based on the Open Data Contract
+Standard to manage and validate data flows
+Develop Python utilities and standard Databricks blueprints,
+managing platform infrastructure through Terraform
+•
+
+•
+
+3288499739
+juliusmaliwat.work@gmail.com
+Milan, Italy
+
+Softlab, Data Engineer
+06/2024 – 06/2025 | Milan, Italy
+Built ETL pipelines for Fastweb on AWS to support reporting and
+dashboards.
+Worked with client technical stakeholders to translate
+requirements into Spark pipelines on network KPIs
+Pipelines were code-reviewed and validated by the client’s Data
+Science team, meeting their quality standards
+•
+
+GitHub
+Italian Citizen
+
+SKILLS
+Programming & Development:
+Python, SQL, JavaScript, R, Git
+Data Engineering & Cloud:
+Spark, AWS, Databricks
+Data Science, AI & Analytics:
+TensorFlow, PyTorch, scikit-learn,
+pandas, Tableau
+
+LANGUAGES
+Italian
+English
+Tagalog
+
+INTERESTS
+Passionate about fitness, basketball,
+chess, and anime. I play basketball
+on a DR4 team, do bodybuilding, and
+occasionally go bouldering; I also
+enjoy trekking. My favorite anime is
+One Piece, and I play electric guitar
+in my church band.
+
+•
+
+KPMG, Software Engineer
+07/2023 – 06/2024 | Milan, Italy
+Part of an internal team building tools to support audit activities.
+Developed data preprocessing pipelines on accounting data for
+internal analysis and reporting using Python
+Implemented web user interfaces using JavaScript/React
+•
+
+•
+
+EDUCATION
+M.sc in Data Science, University of Milano-Bicocca
+10/2023 – 10/2025
+Thesis: Design and Evaluation of Multi-Camera Multi-Object Tracking
+Pipelines in Calibrated Environments
+Final mark: 110/110 with honors
+B.sc in Statistics, University of Milano-Bicocca
+10/2020 – 07/2023
+Thesis: A Machine Learning Application for Meta-Analysis in Clinical
+Settings
+Final mark: 110/110 with honors
+
+PROJECTS
+Deep Learning for Audio, Vision & Image Retrieval
+Built deep learning models for sound classification with CNNs
+(YamNet) and Transformers (AST)
+Enhanced low-light object detection, improving YOLOv8
+performance with CLAHE preprocessing.
+Optimized vehicle image retrieval, evaluating Proxy Loss and
+Center Contrastive Loss for feature learning.
+•
+
+•
+
+•
+
+Unveiling META Champions in League of Legends
+Built an automated pipeline to identify META champions in
+League of Legends, integrating web scraping and API data for
+competitive insights
+Designed a relational database in MySQL to store and analyze
+champion performance data, improving query efficiency and
+strategic insights on champion viability.
+•
+
+•
+
+

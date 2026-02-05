@@ -1,16 +1,17 @@
 ---
-company: "Your Company"
-role: "Your Role"
-location: "Milan, Italy"
-startDate: "2023"
+company: "Quantyca"
+role: "Data Engineer"
+location: "Monza, Italy"
+startDate: "06/2025"
 endDate: "Present"
-summary: "Short summary of your role, scope, and impact."
+summary: "Migration of the data platform from AWS to Databricks for Autostrade per l’Italia, contributing to the definition of the new platform."
 highlights:
-  - "Key achievement or project result."
-  - "Another measurable outcome or responsibility."
+  - "Adopted a declarative approach based on the Open Data Contract Standard to manage and validate data flows."
+  - "Developed Python utilities and standard Databricks blueprints."
+  - "Managed platform infrastructure through Terraform."
 tech:
-  - "Tech 1"
-  - "Tech 2"
+  - "Databricks"
+  - "AWS"
+  - "Terraform"
+  - "Python"
 ---
-
-<!-- Add optional longer details about this role here. -->
