@@ -1,6 +1,6 @@
 # Populate real content + accordion CV sections + simplified Home
 
-**Overall Progress:** `90%`
+**Overall Progress:** `100%`
 
 This ExecPlan is a living document. The sections `Progress`, `Surprises & Discoveries`, `Decision Log`, and `Outcomes & Retrospective` must be kept up to date as work proceeds.
 
@@ -40,7 +40,7 @@ No new external dependencies will be added.
 - [x] 🟩 (2026-02-05 10:20Z) Simplify Home layout to match example.
 - [x] 🟩 (2026-02-05 10:30Z) Implement accordion/timeline for Experience and Education in About.
 - [x] 🟩 (2026-02-05 10:35Z) Hide projects (empty state) without removing the section.
-- [ ] 🟨 Validate locally and confirm deploy.
+- [x] 🟩 (2026-02-05 19:30Z) Validate locally and confirm deploy.
 
 ## Surprises & Discoveries
 
@@ -71,7 +71,7 @@ No new external dependencies will be added.
 
 ## Outcomes & Retrospective
 
-Home and navigation have been simplified and the About page now uses accordions. Projects are hidden behind an empty state. The CV PDF has been replaced and real Experience/Education entries have been added. Remaining work is to validate locally and confirm deploy.
+Home and navigation have been simplified and the About page now uses accordions. Projects are hidden behind an empty state. The CV PDF has been replaced and real Experience/Education entries have been added. Local validation completed and deploy confirmed.
 
 ## Context and Orientation
 

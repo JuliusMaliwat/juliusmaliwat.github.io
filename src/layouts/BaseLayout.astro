@@ -15,8 +15,35 @@ const plausibleDomain = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN;
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang={lang} class="theme-pending">
   <head>
+    <style>
+      html.theme-pending body {
+        visibility: hidden;
+      }
+    </style>
+    <noscript>
+      <style>
+        html.theme-pending body {
+          visibility: visible;
+        }
+      </style>
+    </noscript>
+    <script>
+      (function () {
+        try {
+          const storedTheme = localStorage.getItem("theme");
+          const theme = storedTheme === "light" ? "light" : "dark";
+          document.documentElement.dataset.theme = theme;
+          document.documentElement.style.colorScheme = theme;
+        } catch {
+          document.documentElement.dataset.theme = "dark";
+          document.documentElement.style.colorScheme = "dark";
+        }
+        document.documentElement.dataset.themeReady = "true";
+        document.documentElement.classList.remove("theme-pending");
+      })();
+    </script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
@@ -43,8 +70,10 @@ const plausibleDomain = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN;
         src="https://plausible.io/js/script.js"
       ></script>
     )}
+
   </head>
   <body>
     <slot />
+    <script defer src="/scripts/theme-toggle.js"></script>
   </body>
 </html>

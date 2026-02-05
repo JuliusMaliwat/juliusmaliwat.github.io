@@ -9,33 +9,42 @@ const profileEntry = (await getCollection("profile"))[0];
 const profile = profileEntry?.data;
 const experience = await getCollection("experience");
 const education = await getCollection("education");
-const { Content } = profileEntry ? await profileEntry.render() : { Content: null };
+
+// Sort entries newest-first using startDate (MM/YYYY or YYYY).
+const parseStartDate = (value = "") => {
+  const parts = value.split("/");
+  if (parts.length === 2) {
+    const [month, year] = parts;
+    return new Date(Number(year), Number(month) - 1, 1).getTime();
+  }
+  const year = Number(value);
+  return Number.isFinite(year) ? new Date(year, 0, 1).getTime() : 0;
+};
+
+const sortByStartDesc = (a, b) => parseStartDate(b.data.startDate) - parseStartDate(a.data.startDate);
+const experienceSorted = [...experience].sort(sortByStartDesc);
+const educationSorted = [...education].sort(sortByStartDesc);
 ---
 
 <BaseLayout title="About Me" description={profile?.bioShort}>
   <main>
     <Nav />
     <h1>About Me</h1>
-    <p class="lead">{profile?.headline ?? "Software Engineer"}</p>
-
-    <section>
-      <h2>Profile</h2>
-      {Content ? <Content /> : <p class="muted">Add your bio in `src/content/profile/index.md`.</p>}
-    </section>
-
     <section>
       <h2>Experience</h2>
       <div class="timeline">
-        {experience.map((role) => (
+        {experienceSorted.map((role) => (
           <details class="accordion-item">
             <summary>
-              <div>
+              <span class="timeline-date muted">
+                {role.data.startDate} — {role.data.endDate ?? "Present"}
+              </span>
+              <div class="timeline-content">
                 <strong>{role.data.role}</strong>
                 <div class="muted">
                   {role.data.company} · {role.data.location}
                 </div>
               </div>
-              <span class="muted">{role.data.startDate} — {role.data.endDate ?? "Present"}</span>
             </summary>
             <div class="accordion-body">
               <p>{role.data.summary}</p>
@@ -62,16 +71,18 @@ const { Content } = profileEntry ? await profileEntry.render() : { Content: null
     <section>
       <h2>Education</h2>
       <div class="timeline">
-        {education.map((item) => (
+        {educationSorted.map((item) => (
           <details class="accordion-item">
             <summary>
-              <div>
+              <span class="timeline-date muted">
+                {item.data.startDate} — {item.data.endDate}
+              </span>
+              <div class="timeline-content">
                 <strong>{item.data.degree}</strong>
                 <div class="muted">
                   {item.data.institution} · {item.data.location}
                 </div>
               </div>
-              <span class="muted">{item.data.startDate} — {item.data.endDate}</span>
             </summary>
             <div class="accordion-body">
               <p>{item.data.summary}</p>

@@ -8,6 +8,7 @@ Personal website built with Astro and deployed on GitHub Pages.
 - Projects
 - Library
 - Fixed contact icons (email + GitHub + LinkedIn) across all pages
+- Theme toggle (dark/light) and typewriter greeting on Home
 
 ## Stack
 - Astro (static site generator)

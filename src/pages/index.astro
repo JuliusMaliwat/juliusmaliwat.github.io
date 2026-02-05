@@ -16,7 +16,9 @@ const email = profile?.email ?? "juliusmaliwat.work@gmail.com";
     <Nav />
 
     <section class="home-hero">
-      <h1 class="home-greeting">{profile?.homeGreeting ?? "hello, i'm julius :)"}</h1>
+      <h1 class="home-greeting" data-typewriter>
+        {profile?.homeGreeting ?? "hello, i'm julius :)"}
+      </h1>
       <p class="home-line">{profile?.headline ?? "Data Engineer @ Quantyca"}</p>
       <p class="home-line muted">{profile?.bioShort ?? "MSc Data Science @ University of Bicocca"}</p>
       <div class="cta-group">
@@ -27,5 +29,7 @@ const email = profile?.email ?? "juliusmaliwat.work@gmail.com";
 
     <!-- Fixed contact icons are rendered by the Footer component. -->
     <Footer email={profile?.email} links={profile?.links} />
+
+    <script defer src="/scripts/typewriter.js"></script>
   </main>
 </BaseLayout>

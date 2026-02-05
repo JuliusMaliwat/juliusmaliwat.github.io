@@ -2,18 +2,55 @@
 @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
 
 :root {
-  color-scheme: dark;
-  --bg: #0b0c0f;
-  --bg-elev: #13151b;
-  --grid: rgba(255, 255, 255, 0.06);
-  --text: #f5f7fb;
-  --muted: #a6b0c2;
-  --accent: #8ab4ff;
-  --border: rgba(255, 255, 255, 0.12);
+  color-scheme: light dark;
+  --bg: #241e18;
+  --bg-elev: #2a231c;
+  --bg-overlay: rgba(18, 16, 14, 0.78);
+  --grid: rgba(255, 245, 230, 0.025);
+  --text: #f4eee6;
+  --muted: #c0b3a5;
+  --accent: #d6b58a;
+  --border: rgba(244, 238, 230, 0.12);
   --max-width: 1100px;
   /* Space reserved for the fixed contact icon bar. */
   --fixed-contact-height: 56px;
   --fixed-contact-gap: 24px;
+}
+
+/* Light theme tokens override the mellow dark palette. */
+html[data-theme="light"] {
+  color-scheme: light;
+  --bg: #eee5d9;
+  --bg-elev: #f6efe6;
+  --bg-overlay: rgba(246, 239, 230, 0.9);
+  --grid: rgba(32, 24, 20, 0.035);
+  --text: #261f18;
+  --muted: #766655;
+  --accent: #b0783c;
+  --border: rgba(38, 31, 24, 0.14);
+}
+
+html[data-theme="light"] [data-theme-toggle] {
+  color: var(--text);
+}
+
+html[data-theme="light"] .timeline-date::before {
+  box-shadow: 0 0 0 6px rgba(176, 120, 60, 0.15);
+}
+
+html[data-theme="light"] .accordion-item summary:hover {
+  background: rgba(36, 30, 24, 0.04);
+  border-color: rgba(36, 30, 24, 0.14);
+}
+
+html[data-theme="light"] .timeline::before {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(38, 31, 24, 0.2) 8%,
+    rgba(38, 31, 24, 0.2) 92%,
+    transparent 100%
+  );
 }
 
 html {
@@ -122,6 +159,27 @@ section:last-of-type {
 .home-greeting {
   font-size: clamp(2.4rem, 5vw, 3.6rem);
   margin-bottom: 8px;
+  min-height: 1.2em;
+  display: inline-block;
+  position: relative;
+}
+
+/* Typewriter cursor for the greeting. */
+.home-greeting.is-typing::after {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  margin-left: 6px;
+  background: var(--text);
+  animation: blink 0.9s step-end infinite;
+  vertical-align: -0.15em;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
 }
 
 .home-line {
@@ -206,6 +264,8 @@ section:last-of-type {
   flex-wrap: wrap;
   gap: 16px;
   font-size: 0.95rem;
+  align-items: center;
+  margin-left: auto;
 }
 
 .nav-home {
@@ -240,44 +300,129 @@ section:last-of-type {
 .timeline {
   display: grid;
   gap: 16px;
-  border-left: 1px solid var(--border);
-  padding-left: 20px;
+  padding-left: 22px;
+  position: relative;
+  --timeline-date-width: 180px;
+  --timeline-line-left: 6px;
+  --timeline-dot-offset: 38px;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: var(--timeline-line-left);
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(244, 238, 230, 0.25) 8%,
+    rgba(244, 238, 230, 0.25) 92%,
+    transparent 100%
+  );
 }
 
 .accordion-item {
   position: relative;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 14px 16px;
-  background: var(--bg-elev);
-}
-
-.accordion-item::before {
-  content: "";
-  position: absolute;
-  left: -29px;
-  top: 18px;
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
-  background: var(--accent);
+  border: none;
+  border-radius: 10px;
+  padding: 8px 6px;
+  background: transparent;
+  transition: transform 0.2s ease, background 0.2s ease;
 }
 
 .accordion-item summary {
   list-style: none;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: var(--timeline-date-width) 1fr auto;
   align-items: center;
   gap: 16px;
   cursor: pointer;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  transition: border-color 0.2s ease, background 0.2s ease;
 }
 
 .accordion-item summary::-webkit-details-marker {
   display: none;
 }
 
+.accordion-item summary::after {
+  content: "↗";
+  font-size: 0.95rem;
+  color: var(--muted);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.accordion-item summary:hover {
+  border-color: var(--border);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.accordion-item summary:hover::after {
+  color: var(--accent);
+  transform: translateX(3px);
+}
+
+
+.accordion-item:focus-within summary {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+details[open] summary::after {
+  content: "↘";
+  transform: translateX(2px);
+}
+
 .accordion-body {
   margin-top: 10px;
+  color: var(--muted);
+  padding-left: var(--timeline-date-width);
+}
+
+.timeline-date {
+  font-size: 0.95rem;
+  line-height: 1.2;
+  white-space: nowrap;
+  padding-top: 2px;
+  position: relative;
+  display: inline-block;
+}
+
+.timeline-date::before {
+  content: "";
+  position: absolute;
+  left: calc(-1 * var(--timeline-dot-offset));
+  top: 0.6em;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 0 0 6px rgba(214, 181, 138, 0.12);
+}
+
+.timeline-content strong {
+  display: block;
+}
+
+@media (max-width: 720px) {
+  .accordion-item summary {
+    grid-template-columns: 1fr auto;
+  }
+
+  .timeline-date {
+    grid-column: 1 / -1;
+    font-size: 0.85rem;
+    white-space: normal;
+  }
+
+  .accordion-body {
+    padding-left: 0;
+  }
 }
 
 /* Fixed contact icon bar pinned to the bottom of the viewport. */
@@ -292,7 +437,7 @@ section:last-of-type {
   padding: 10px 14px;
   border-radius: 999px;
   border: 1px solid var(--border);
-  background: rgba(11, 12, 15, 0.72);
+  background: var(--bg-overlay);
   backdrop-filter: blur(10px);
   z-index: 100;
 }
@@ -329,4 +474,56 @@ section:last-of-type {
   .grid.two {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
+.theme-toggle {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-elev);
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+html:not([data-theme-ready]) .theme-toggle {
+  transition: none;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.theme-icon {
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.theme-icon.sun {
+  display: none;
+}
+
+html[data-theme="light"] .theme-icon.sun {
+  display: inline-flex;
+}
+
+html[data-theme="light"] .theme-icon.moon {
+  display: none;
 }
