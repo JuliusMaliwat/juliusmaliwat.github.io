@@ -1,0 +1,4 @@
+---
+label: "Trekking"
+icon: "🥾"
+---

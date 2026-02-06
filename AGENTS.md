@@ -9,6 +9,7 @@ This repo is a personal website built with Astro and deployed to GitHub Pages vi
 3. `docs/EXECPLAN-FIXED-CONTACT-ICONS.md` — Replace footer contact card with fixed bottom icon bar (implementation complete; validation pending).
 4. `docs/EXECPLAN-CONTENT-CV-ACCORDIONS.md` — Real CV content, simplified Home, accordions for Experience/Education, empty Projects state (implemented and validated).
 5. `docs/EXECPLAN-MELLOW-THEME-TYPEWRITER.md` — Mellow palette + theme toggle, typewriter greeting, About cleanup, accordion affordance, sorting (implemented and validated).
+6. `docs/EXECPLAN-EDU-CERT-INTERESTS.md` — Education enrichment, certifications, hobbies & interests (implemented and validated).
 
 ## Plan Authoring & Execution Rules
 When the user asks to “build a plan,” create the plan using the template and rules in `PLANS.md` at the repo root. Keep the plan self-contained and follow the formatting constraints in that file exactly.

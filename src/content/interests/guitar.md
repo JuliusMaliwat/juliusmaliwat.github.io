@@ -1,0 +1,4 @@
+---
+label: "Guitar"
+icon: "🎸"
+---

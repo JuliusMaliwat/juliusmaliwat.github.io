@@ -52,10 +52,31 @@ const education = defineCollection({
     location: z.string().optional(),
     startDate: z.string(),
     endDate: z.string().optional(),
-    summary: z.string(),
+    summary: z.string().optional(),
+    grade: z.string().optional(),
     highlights: z.array(z.string()).optional(),
     thesis: z.string().optional(),
     projects: z.array(z.string()).optional(),
+    courses: z.array(z.string()).optional(),
+  }),
+});
+
+const certifications = defineCollection({
+  type: "content",
+  schema: z.object({
+    title: z.string(),
+    issuer: z.string(),
+    date: z.string(),
+    credentialUrl: z.string().url(),
+  }),
+});
+
+const interests = defineCollection({
+  type: "content",
+  schema: z.object({
+    label: z.string(),
+    description: z.string().optional(),
+    icon: z.string().optional(),
   }),
 });
 
@@ -92,4 +113,4 @@ const projects = defineCollection({
   }),
 });
 
-export const collections = { profile, experience, education, projects };
+export const collections = { profile, experience, education, certifications, interests, projects };

@@ -1,0 +1,4 @@
+---
+label: "Fitness"
+icon: "💪"
+---
