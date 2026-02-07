@@ -2,6 +2,7 @@
 institution: "University of Milano-Bicocca"
 institutionLogo: "/logos/bicocca.jpg"
 degree: "M.Sc in Data Science"
+degreeUrl: "https://www.unimib.it/graduate/data-science"
 location: "Milan, Italy"
 startDate: "10/2023"
 endDate: "10/2025"

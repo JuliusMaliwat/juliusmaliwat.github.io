@@ -67,6 +67,8 @@ const techIconMap = {
   React: "/skills/react.svg",
   Terraform: "/skills/terraform.svg",
 } as const;
+
+const githubLogo = "/logos/github.svg";
 ---
 
 <BaseLayout title="About Me" description={profile?.bioShort}>
@@ -156,7 +158,13 @@ const techIconMap = {
               </span>
               <div class="timeline-content">
                 <strong>
-                  {item.data.degree}
+                  {item.data.degreeUrl ? (
+                    <a class="degree-link" href={item.data.degreeUrl} target="_blank" rel="noreferrer">
+                      {item.data.degree}
+                    </a>
+                  ) : (
+                    item.data.degree
+                  )}
                   {item.data.grade && <span class="grade"> | {item.data.grade}</span>}
                 </strong>
                 <div class="institution-line muted">
@@ -181,8 +189,9 @@ const techIconMap = {
                 <p>
                   <strong>Thesis:</strong>{" "}
                   {item.data.thesisUrl ? (
-                    <a class="inline-link" href={item.data.thesisUrl} target="_blank" rel="noreferrer">
-                      {item.data.thesis}
+                    <a class="inline-link repo-link" href={item.data.thesisUrl} target="_blank" rel="noreferrer">
+                      <img class="repo-link-icon" src={githubLogo} alt="GitHub" loading="lazy" />
+                      <span>{item.data.thesis}</span>
                     </a>
                   ) : (
                     item.data.thesis
@@ -212,7 +221,10 @@ const techIconMap = {
                       >
                         <strong>{project.title}</strong>
                         {project.course && <span class="muted">{project.course}</span>}
-                        <span class="uni-project-link">View on GitHub</span>
+                        <span class="uni-project-link">
+                          <img class="repo-link-icon" src={githubLogo} alt="GitHub" loading="lazy" />
+                          <span>View on GitHub</span>
+                        </span>
                       </a>
                     ))}
                   </div>

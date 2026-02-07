@@ -458,8 +458,28 @@ details[open] summary::after {
   color: var(--muted);
 }
 
+.degree-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  text-underline-offset: 2px;
+}
+
 .inline-link {
   color: var(--accent);
+}
+
+.repo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.repo-link-icon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 .course-list {
@@ -489,6 +509,9 @@ details[open] summary::after {
 }
 
 .uni-project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   color: var(--accent);
   font-size: 0.85rem;
 }

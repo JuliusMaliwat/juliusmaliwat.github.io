@@ -2,6 +2,7 @@
 institution: "University of Milano-Bicocca"
 institutionLogo: "/logos/bicocca.jpg"
 degree: "B.Sc in Statistics"
+degreeUrl: "https://en.unimib.it/undergraduate/statistical-economic-sciences"
 location: "Milan, Italy"
 startDate: "10/2020"
 endDate: "07/2023"

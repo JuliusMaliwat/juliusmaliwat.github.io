@@ -52,6 +52,7 @@ const education = defineCollection({
     institution: z.string(),
     institutionLogo: z.string().optional(),
     degree: z.string(),
+    degreeUrl: z.string().url().optional(),
     location: z.string().optional(),
     startDate: z.string(),
     endDate: z.string().optional(),
