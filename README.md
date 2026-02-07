@@ -6,9 +6,13 @@ Personal website built with Astro and deployed on GitHub Pages.
 - Home (CTA-only: email + CV download)
 - About Me (combined Experience + Education)
 - Certifications
+- Skills (grouped by CV taxonomy with icons)
 - Hobbies & Interests
 - Projects
 - Library
+- Company logos + links in Experience
+- University project cards + thesis links in Education
+- Certification badge image in Certifications
 - Fixed contact icons (email + GitHub + LinkedIn) across all pages
 - Theme toggle (dark/light) and typewriter greeting on Home
 
@@ -28,6 +32,7 @@ Content lives in `src/content/`:
 - `experience/` for professional roles
 - `education/` for university studies, thesis, and projects
 - `certifications/` for credential listings
+- `skills/` for categorized skill icons
 - `interests/` for hobbies and interests
 - `projects/` for project landing pages
 

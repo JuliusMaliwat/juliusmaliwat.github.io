@@ -1,7 +1,7 @@
 ﻿# Repository Guidelines
 
 ## Context Summary
-This repo is a personal website built with Astro and deployed to GitHub Pages via GitHub Actions. The current navigation is Home, About Me, Projects, Library. Home is intentionally minimal and only includes two actions: “Get in touch” (mailto) and “Download CV” (served from `public/cv.pdf`). The About Me page merges Experience and Education into a single CV-style page. Older Experience/Education/Contact routes now redirect to `/about/`.
+This repo is a personal website built with Astro and deployed to GitHub Pages via GitHub Actions. The current navigation is Home, About Me, Projects, Library. Home is intentionally minimal and only includes two actions: “Get in touch” (mailto) and “Download CV” (served from `public/cv.pdf`). The About Me page is a CV-style page with Experience, Education, Certifications, Skills, and Hobbies & Interests. Older Experience/Education/Contact routes now redirect to `/about/`.
 
 ## Executed Plans (chronological)
 1. `docs/IMPLEMENTATION_PLAN.md` — Initial site scaffold, content collections, core pages, styles, and deploy workflow (plan notes final validation).
@@ -10,6 +10,7 @@ This repo is a personal website built with Astro and deployed to GitHub Pages vi
 4. `docs/EXECPLAN-CONTENT-CV-ACCORDIONS.md` — Real CV content, simplified Home, accordions for Experience/Education, empty Projects state (implemented and validated).
 5. `docs/EXECPLAN-MELLOW-THEME-TYPEWRITER.md` — Mellow palette + theme toggle, typewriter greeting, About cleanup, accordion affordance, sorting (implemented and validated).
 6. `docs/EXECPLAN-EDU-CERT-INTERESTS.md` — Education enrichment, certifications, hobbies & interests (implemented and validated).
+7. `docs/EXECPLAN-SKILLS-LOGOS-UNI-PROJECTS.md` — Skills taxonomy from CV, company logos/links, university project cards, certification badge image (implemented; local build retry pending due `.vite` EPERM lock).
 
 ## Plan Authoring & Execution Rules
 When the user asks to “build a plan,” create the plan using the template and rules in `PLANS.md` at the repo root. Keep the plan self-contained and follow the formatting constraints in that file exactly.

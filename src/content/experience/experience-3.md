@@ -1,5 +1,7 @@
 ---
 company: "KPMG"
+companyLogo: "/logos/kpmg.jpg"
+companyUrl: "https://kpmg.com/it/it.html"
 role: "Software Engineer"
 location: "Milan, Italy"
 startDate: "07/2023"

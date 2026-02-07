@@ -26,6 +26,8 @@ const experience = defineCollection({
   type: "content",
   schema: z.object({
     company: z.string(),
+    companyLogo: z.string().optional(),
+    companyUrl: z.string().url().optional(),
     role: z.string(),
     location: z.string().optional(),
     startDate: z.string(),
@@ -48,6 +50,7 @@ const education = defineCollection({
   type: "content",
   schema: z.object({
     institution: z.string(),
+    institutionLogo: z.string().optional(),
     degree: z.string(),
     location: z.string().optional(),
     startDate: z.string(),
@@ -56,8 +59,18 @@ const education = defineCollection({
     grade: z.string().optional(),
     highlights: z.array(z.string()).optional(),
     thesis: z.string().optional(),
+    thesisUrl: z.string().url().optional(),
     projects: z.array(z.string()).optional(),
     courses: z.array(z.string()).optional(),
+    universityProjects: z
+      .array(
+        z.object({
+          title: z.string(),
+          course: z.string().optional(),
+          url: z.string().url(),
+        })
+      )
+      .optional(),
   }),
 });
 
@@ -68,6 +81,7 @@ const certifications = defineCollection({
     issuer: z.string(),
     date: z.string(),
     credentialUrl: z.string().url(),
+    badgeImage: z.string().optional(),
   }),
 });
 
@@ -77,6 +91,20 @@ const interests = defineCollection({
     label: z.string(),
     description: z.string().optional(),
     icon: z.string().optional(),
+  }),
+});
+
+const skills = defineCollection({
+  type: "content",
+  schema: z.object({
+    name: z.string(),
+    icon: z.string(),
+    category: z.enum([
+      "Programming & Development",
+      "Data Engineering & Cloud",
+      "Data Science, AI & Analytics",
+    ]),
+    order: z.number().optional(),
   }),
 });
 
@@ -113,4 +141,12 @@ const projects = defineCollection({
   }),
 });
 
-export const collections = { profile, experience, education, certifications, interests, projects };
+export const collections = {
+  profile,
+  experience,
+  education,
+  certifications,
+  interests,
+  skills,
+  projects,
+};

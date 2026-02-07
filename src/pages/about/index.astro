@@ -11,6 +11,7 @@ const experience = await getCollection("experience");
 const education = await getCollection("education");
 const certifications = await getCollection("certifications");
 const interests = await getCollection("interests");
+const skills = await getCollection("skills");
 
 // Sort entries newest-first using startDate (MM/YYYY or YYYY).
 const parseStartDate = (value = "") => {
@@ -29,12 +30,50 @@ const educationSorted = [...education].sort(sortByStartDesc);
 const certificationsSorted = [...certifications].sort(
   (a, b) => Date.parse(b.data.date) - Date.parse(a.data.date)
 );
+
+const skillCategoryOrder = [
+  "Programming & Development",
+  "Data Engineering & Cloud",
+  "Data Science, AI & Analytics",
+];
+
+const groupedSkills = skillCategoryOrder
+  .map((category) => ({
+    category,
+    items: skills
+      .filter((entry) => entry.data.category === category)
+      .sort(
+        (a, b) =>
+          (a.data.order ?? Number.MAX_SAFE_INTEGER) -
+            (b.data.order ?? Number.MAX_SAFE_INTEGER) || a.data.name.localeCompare(b.data.name)
+      ),
+  }))
+  .filter((group) => group.items.length > 0);
+
+const techIconMap = {
+  Python: "/skills/python.svg",
+  SQL: "/skills/sql.icon.svg",
+  JavaScript: "/skills/javascript.svg",
+  R: "/skills/R.svg",
+  Git: "/skills/git.svg",
+  Spark: "/skills/spark.svg",
+  AWS: "/skills/aws.svg",
+  Databricks: "/skills/databricks.svg",
+  TensorFlow: "/skills/tensorflow.svg",
+  PyTorch: "/skills/pytorch.svg",
+  "scikit-learn": "/skills/scikit-learn.svg",
+  pandas: "/skills/Pandas.svg",
+  Tableau: "/skills/tableau.svg",
+  React: "/skills/react.svg",
+  Terraform: "/skills/terraform.svg",
+} as const;
 ---
 
 <BaseLayout title="About Me" description={profile?.bioShort}>
   <main>
     <Nav />
     <h1>About Me</h1>
+
     <section>
       <h2>Experience</h2>
       <div class="timeline">
@@ -42,13 +81,36 @@ const certificationsSorted = [...certifications].sort(
           <details class="accordion-item">
             <summary>
               <span class="timeline-date muted">
-                {role.data.startDate} — {role.data.endDate ?? "Present"}
+                {role.data.startDate} - {role.data.endDate ?? "Present"}
               </span>
               <div class="timeline-content">
                 <strong>{role.data.role}</strong>
-                <div class="muted">
-                  {role.data.company} · {role.data.location}
-                </div>
+                {role.data.companyUrl ? (
+                  <a
+                    class="company-link muted"
+                    href={role.data.companyUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {role.data.companyLogo && (
+                      <img
+                        class="company-logo"
+                        src={role.data.companyLogo}
+                        alt={`${role.data.company} logo`}
+                        loading="lazy"
+                      />
+                    )}
+                    <span>
+                      {role.data.company}
+                      {role.data.location ? ` | ${role.data.location}` : ""}
+                    </span>
+                  </a>
+                ) : (
+                  <div class="muted">
+                    {role.data.company}
+                    {role.data.location ? ` | ${role.data.location}` : ""}
+                  </div>
+                )}
               </div>
             </summary>
             <div class="accordion-body">
@@ -63,7 +125,17 @@ const certificationsSorted = [...certifications].sort(
               {role.data.tech?.length && (
                 <div class="nav-links">
                   {role.data.tech.map((tech) => (
-                    <span class="pill">{tech}</span>
+                    <span class="pill tech-pill">
+                      {techIconMap[tech as keyof typeof techIconMap] && (
+                        <img
+                          class="tech-pill-icon"
+                          src={techIconMap[tech as keyof typeof techIconMap]}
+                          alt={`${tech} icon`}
+                          loading="lazy"
+                        />
+                      )}
+                      <span>{tech}</span>
+                    </span>
                   ))}
                 </div>
               )}
@@ -80,21 +152,43 @@ const certificationsSorted = [...certifications].sort(
           <details class="accordion-item">
             <summary>
               <span class="timeline-date muted">
-                {item.data.startDate} — {item.data.endDate}
+                {item.data.startDate} - {item.data.endDate}
               </span>
               <div class="timeline-content">
                 <strong>
                   {item.data.degree}
-                  {item.data.grade && <span class="grade"> · {item.data.grade}</span>}
+                  {item.data.grade && <span class="grade"> | {item.data.grade}</span>}
                 </strong>
-                <div class="muted">
-                  {item.data.institution} · {item.data.location}
+                <div class="institution-line muted">
+                  {item.data.institutionLogo && (
+                    <img
+                      class="institution-logo"
+                      src={item.data.institutionLogo}
+                      alt={`${item.data.institution} logo`}
+                      loading="lazy"
+                    />
+                  )}
+                  <span>
+                    {item.data.institution}
+                    {item.data.location ? ` | ${item.data.location}` : ""}
+                  </span>
                 </div>
               </div>
             </summary>
             <div class="accordion-body">
               {item.data.summary && <p>{item.data.summary}</p>}
-              {item.data.thesis && <p><strong>Thesis:</strong> {item.data.thesis}</p>}
+              {item.data.thesis && (
+                <p>
+                  <strong>Thesis:</strong>{" "}
+                  {item.data.thesisUrl ? (
+                    <a class="inline-link" href={item.data.thesisUrl} target="_blank" rel="noreferrer">
+                      {item.data.thesis}
+                    </a>
+                  ) : (
+                    item.data.thesis
+                  )}
+                </p>
+              )}
               {item.data.courses?.length && (
                 <>
                   <div class="eyebrow">Relevant coursework</div>
@@ -105,12 +199,24 @@ const certificationsSorted = [...certifications].sort(
                   </ul>
                 </>
               )}
-              {item.data.projects?.length && (
-                <ul>
-                  {item.data.projects.map((project) => (
-                    <li>{project}</li>
-                  ))}
-                </ul>
+              {item.data.universityProjects?.length && (
+                <>
+                  <div class="eyebrow">University projects</div>
+                  <div class="uni-project-grid">
+                    {item.data.universityProjects.map((project) => (
+                      <a
+                        class="uni-project-card"
+                        href={project.url}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <strong>{project.title}</strong>
+                        {project.course && <span class="muted">{project.course}</span>}
+                        <span class="uni-project-link">View on GitHub</span>
+                      </a>
+                    ))}
+                  </div>
+                </>
               )}
               {item.data.highlights?.length && (
                 <ul>
@@ -130,15 +236,54 @@ const certificationsSorted = [...certifications].sort(
       <div class="cert-list">
         {certificationsSorted.map((cert) => (
           <div class="cert-item">
-            <div>
-              <strong>{cert.data.title}</strong>
-              <div class="muted">{cert.data.issuer}</div>
+            <div class="cert-main">
+              {cert.data.badgeImage && (
+                <img
+                  class="cert-badge"
+                  src={cert.data.badgeImage}
+                  alt={`${cert.data.title} badge`}
+                  loading="lazy"
+                />
+              )}
+              <div>
+                <strong>{cert.data.title}</strong>
+                <div class="muted">{cert.data.issuer}</div>
+              </div>
             </div>
             <div class="cert-meta">
               <span class="muted">{cert.data.date}</span>
               <a class="cert-link" href={cert.data.credentialUrl} target="_blank" rel="noreferrer">
                 View credential
               </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section>
+      <h2>Skills</h2>
+      <div class="skills-groups">
+        {groupedSkills.map((group) => (
+          <div class="skills-group">
+            <div class="eyebrow">{group.category}</div>
+            <div class="skills-grid">
+              {group.items.map((skill) => (
+                <span
+                  class="skill-icon-only"
+                  aria-label={skill.data.name}
+                  data-skill={skill.data.name}
+                  title={skill.data.name}
+                  tabindex="0"
+                >
+                  <img
+                    class="skill-icon"
+                    src={skill.data.icon}
+                    alt={`${skill.data.name} icon`}
+                    loading="lazy"
+                  />
+                </span>
+              ))}
             </div>
           </div>
         ))}

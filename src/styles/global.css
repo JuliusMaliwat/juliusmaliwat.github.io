@@ -239,11 +239,24 @@ section:last-of-type {
 
 .pill {
   display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 6px 12px;
   border: 1px solid var(--border);
   border-radius: 999px;
   font-size: 0.85rem;
   color: var(--muted);
+}
+
+.tech-pill {
+  background: color-mix(in srgb, var(--bg-elev) 32%, transparent);
+}
+
+.tech-pill-icon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+  opacity: 0.95;
 }
 
 .muted {
@@ -350,7 +363,7 @@ section:last-of-type {
 }
 
 .accordion-item summary::after {
-  content: "↗";
+  content: "->";
   font-size: 0.95rem;
   color: var(--muted);
   transition: transform 0.2s ease, color 0.2s ease;
@@ -373,8 +386,8 @@ section:last-of-type {
 }
 
 details[open] summary::after {
-  content: "↘";
-  transform: translateX(2px);
+  content: "v";
+  transform: none;
 }
 
 .accordion-body {
@@ -409,13 +422,75 @@ details[open] summary::after {
   display: block;
 }
 
+.company-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.company-logo {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  background: var(--bg-elev);
+}
+
+.institution-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.institution-logo {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  background: var(--bg-elev);
+}
+
 .grade {
   font-weight: 500;
   color: var(--muted);
 }
 
+.inline-link {
+  color: var(--accent);
+}
+
 .course-list {
   margin-top: 8px;
+}
+
+.uni-project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.uni-project-card {
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--bg-elev) 45%, transparent);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.uni-project-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.uni-project-link {
+  color: var(--accent);
+  font-size: 0.85rem;
 }
 
 .cert-list {
@@ -430,6 +505,21 @@ details[open] summary::after {
   gap: 20px;
   padding: 12px 0;
   border-bottom: 1px solid var(--border);
+}
+
+.cert-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cert-badge {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg-elev);
 }
 
 .cert-item:last-child {
@@ -447,6 +537,78 @@ details[open] summary::after {
 .cert-link {
   font-size: 0.9rem;
   color: var(--accent);
+}
+
+.skills-groups {
+  display: grid;
+  gap: 20px;
+}
+
+.skills-group {
+  display: grid;
+  gap: 10px;
+}
+
+.skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.skill-icon-only {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--bg-elev) 38%, transparent);
+  cursor: default;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.skill-icon-only::after {
+  content: attr(data-skill);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  padding: 4px 8px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-elev);
+  color: var(--text);
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.16s ease;
+  z-index: 2;
+}
+
+.skill-icon-only:hover,
+.skill-icon-only:focus-visible {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.skill-icon-only:hover::after,
+.skill-icon-only:focus-visible::after {
+  opacity: 1;
+}
+
+.skill-icon-only:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.skill-icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
 }
 
 .interests-grid {
@@ -490,9 +652,17 @@ details[open] summary::after {
     align-items: flex-start;
   }
 
+  .cert-main {
+    align-items: flex-start;
+  }
+
   .cert-meta {
     align-items: flex-start;
     text-align: left;
+  }
+
+  .skills-grid {
+    gap: 6px;
   }
 }
 
