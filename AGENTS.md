@@ -1,7 +1,7 @@
 ﻿# Repository Guidelines
 
 ## Context Summary
-This repo is a personal website built with Astro and deployed to GitHub Pages via GitHub Actions. The current navigation is Home, About Me, Projects, Library. Home is intentionally minimal and only includes two actions: “Get in touch” (mailto) and “Download CV” (served from `public/cv.pdf`). The About Me page is a CV-style page with Experience, Education, Certifications, Skills, and Hobbies & Interests. Older Experience/Education/Contact routes now redirect to `/about/`.
+This repo is a personal website built with Astro and deployed to GitHub Pages via GitHub Actions. The current navigation is Home, About Me, Projects, Library. Home is intentionally minimal and only includes two actions: “Get in touch” (mailto) and “Download CV” (served from `public/cv.pdf`). The About Me page is a CV-style page with Experience, Education, Certifications, Skills, and Hobbies & Interests. Projects support per-slug detail pages (for example `/projects/why-am-i-here-extension/`). Older Experience/Education/Contact routes now redirect to `/about/`.
 
 ## Executed Plans (chronological)
 1. `docs/IMPLEMENTATION_PLAN.md` — Initial site scaffold, content collections, core pages, styles, and deploy workflow (plan notes final validation).

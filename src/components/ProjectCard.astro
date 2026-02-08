@@ -4,6 +4,11 @@ const { project } = Astro.props;
 ---
 
 <article class="card">
+  {project.data.media?.[0] && (
+    <a href={`/projects/${project.slug}/`} class="project-card-media">
+      <img src={project.data.media[0].src} alt={project.data.media[0].alt} loading="lazy" />
+    </a>
+  )}
   <div class="eyebrow">{project.data.type}</div>
   <h3>
     <a href={`/projects/${project.slug}/`}>{project.data.title}</a>

@@ -9,6 +9,7 @@ Personal website built with Astro and deployed on GitHub Pages.
 - Skills (grouped by CV taxonomy with icons)
 - Hobbies & Interests
 - Projects
+- Dedicated project detail pages (example: `/projects/why-am-i-here-extension/`)
 - Library
 - Company logos + links in Experience
 - University project cards + thesis links in Education
@@ -37,6 +38,9 @@ Content lives in `src/content/`:
 - `projects/` for project landing pages
 
 The Home CTAs link to email and `public/cv.pdf`. Update `public/cv.pdf` whenever the CV changes.
+
+`Projects` supports detail routes per project slug, for example:
+`/projects/why-am-i-here-extension/`
 
 Social links used by the fixed contact icon bar are also defined in `src/content/profile/index.md`.
 

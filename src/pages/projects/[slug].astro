@@ -18,56 +18,150 @@ const { project } = Astro.props;
 const { Content } = await project.render();
 const profileEntry = (await getCollection("profile"))[0];
 const profile = profileEntry?.data;
+const isWhyAmIHere = project.slug === "why-am-i-here-extension";
+const heroMedia = project.data.media?.[0];
+const galleryMedia = project.data.media?.slice(1) ?? [];
+const primaryLink = project.data.links?.[0];
+const githubLink =
+  project.data.links?.find((item) => item.label.toLowerCase().includes("github")) ??
+  project.data.links?.[1];
 ---
 
 <BaseLayout title={project.data.title} description={project.data.summary}>
-  <main>
+  <main class={isWhyAmIHere ? "project-page project-page--extension" : "project-page"}>
     <Nav />
+    {isWhyAmIHere ? (
+      <>
+        <section class="extension-hero">
+          <div class="extension-hero-copy">
+            <div class="eyebrow">Chrome Extension</div>
+            <div class="extension-hero-title">
+              <img
+                src="/projects/why-am-i-here/icon-128.png"
+                alt="why am i here extension icon"
+                loading="lazy"
+              />
+              <h1 class="hero-title">{project.data.title}</h1>
+            </div>
+            <p class="lead">{project.data.summary}</p>
+            <p class="muted extension-subcopy">{project.data.solution}</p>
+            {project.data.tech?.length && (
+              <div class="nav-links extension-tech">
+                {project.data.tech.map((tech) => (
+                  <span class="pill">{tech}</span>
+                ))}
+              </div>
+            )}
+            <div class="extension-cta">
+              {primaryLink && (
+                <a class="button" href={primaryLink.url} target="_blank" rel="noreferrer">
+                  {primaryLink.label}
+                </a>
+              )}
+              {githubLink && (
+                <a class="button ghost" href={githubLink.url} target="_blank" rel="noreferrer">
+                  View Source
+                </a>
+              )}
+            </div>
+          </div>
+          {heroMedia && (
+            <div class="extension-hero-media">
+              <img src={heroMedia.src} alt={heroMedia.alt} loading="lazy" />
+            </div>
+          )}
+        </section>
 
-    <section>
-      <div class="eyebrow">{project.data.type}</div>
-      <h1 class="hero-title">{project.data.title}</h1>
-      <p class="lead">{project.data.summary}</p>
-      {project.data.tech?.length && (
-        <div class="nav-links">
-          {project.data.tech.map((tech) => (
-            <span class="pill">{tech}</span>
-          ))}
-        </div>
-      )}
-      {project.data.links?.length && (
-        <div class="nav-links" style="margin-top: 16px;">
-          {project.data.links.map((link) => (
-            <a href={link.url} target="_blank" rel="noreferrer">
-              {link.label}
-            </a>
-          ))}
-        </div>
-      )}
-    </section>
+        {project.data.highlights?.length && (
+          <section>
+            <h2>Why it works</h2>
+            <div class="extension-highlights">
+              {project.data.highlights.map((item) => (
+                <article class="extension-highlight-item">
+                  <p>{item}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
 
-    <section>
-      <h2>Overview</h2>
-      {project.data.problem && (
-        <p><strong>Problem:</strong> {project.data.problem}</p>
-      )}
-      {project.data.solution && (
-        <p><strong>Solution:</strong> {project.data.solution}</p>
-      )}
-      {project.data.highlights?.length && (
-        <ul>
-          {project.data.highlights.map((item) => (
-            <li>{item}</li>
-          ))}
-        </ul>
-      )}
-    </section>
+        <section>
+          <h2>How it works</h2>
+          <div class="extension-steps">
+            <p><strong>1.</strong> Select the distracting domains you want to guard.</p>
+            <p><strong>2.</strong> When a domain opens, the extension asks "why am i here?".</p>
+            <p><strong>3.</strong> Add an intention and a timer, then browse with visible context.</p>
+            <p><strong>4.</strong> When time expires, the prompt returns so you can recommit.</p>
+          </div>
+        </section>
 
-    <section>
-      <h2>Details</h2>
-      <Content />
-    </section>
+        {galleryMedia.length > 0 && (
+          <section>
+            <h2>Product screens</h2>
+            <div class="extension-gallery">
+              {galleryMedia.map((item) => (
+                <figure class="extension-gallery-item">
+                  <img src={item.src} alt={item.alt} loading="lazy" />
+                </figure>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <section>
+          <h2>Details</h2>
+          <Content />
+        </section>
+      </>
+    ) : (
+      <>
+        <section>
+          <div class="eyebrow">{project.data.type}</div>
+          <h1 class="hero-title">{project.data.title}</h1>
+          <p class="lead">{project.data.summary}</p>
+          {project.data.tech?.length && (
+            <div class="nav-links">
+              {project.data.tech.map((tech) => (
+                <span class="pill">{tech}</span>
+              ))}
+            </div>
+          )}
+          {project.data.links?.length && (
+            <div class="nav-links" style="margin-top: 16px;">
+              {project.data.links.map((link) => (
+                <a href={link.url} target="_blank" rel="noreferrer">
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          )}
+        </section>
+
+        <section>
+          <h2>Overview</h2>
+          {project.data.problem && (
+            <p><strong>Problem:</strong> {project.data.problem}</p>
+          )}
+          {project.data.solution && (
+            <p><strong>Solution:</strong> {project.data.solution}</p>
+          )}
+          {project.data.highlights?.length && (
+            <ul>
+              {project.data.highlights.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        <section>
+          <h2>Details</h2>
+          <Content />
+        </section>
+      </>
+    )}
 
     <Footer email={profile?.email} location={profile?.location} links={profile?.links} />
   </main>
 </BaseLayout>
+
