@@ -36,11 +36,20 @@ const githubLink =
           <div class="extension-hero-copy">
             <div class="eyebrow">Chrome Extension</div>
             <div class="extension-hero-title">
-              <img
-                src="/projects/why-am-i-here/icon-128.png"
-                alt="why am i here extension icon"
-                loading="lazy"
-              />
+              <span class="extension-logo-wrap" aria-hidden="true">
+                <img
+                  class="extension-logo extension-logo--light"
+                  src="/projects/why-am-i-here/logo.svg"
+                  alt=""
+                  loading="lazy"
+                />
+                <img
+                  class="extension-logo extension-logo--dark"
+                  src="/projects/why-am-i-here/logo-white.svg"
+                  alt=""
+                  loading="lazy"
+                />
+              </span>
               <h1 class="hero-title">{project.data.title}</h1>
             </div>
             <p class="lead">{project.data.summary}</p>
