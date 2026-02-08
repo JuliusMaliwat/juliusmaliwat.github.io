@@ -1,5 +1,6 @@
 ---
 // Card summary for project lists.
+import { TECH_ICON_MAP } from "../consts";
 const { project } = Astro.props;
 ---
 
@@ -17,7 +18,12 @@ const { project } = Astro.props;
   {project.data.tech?.length && (
     <div class="nav-links" style="margin-top: 12px;">
       {project.data.tech.map((tech) => (
-        <span class="pill">{tech}</span>
+        <span class="pill tech-pill">
+          {TECH_ICON_MAP[tech] && (
+            <img class="tech-pill-icon" src={TECH_ICON_MAP[tech]} alt={`${tech} icon`} loading="lazy" />
+          )}
+          <span>{tech}</span>
+        </span>
       ))}
     </div>
   )}

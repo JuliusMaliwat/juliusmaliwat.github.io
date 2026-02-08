@@ -4,6 +4,7 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Nav from "../../components/Nav.astro";
 import Footer from "../../components/Footer.astro";
+import { TECH_ICON_MAP } from "../../consts";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -57,7 +58,12 @@ const githubLink =
             {project.data.tech?.length && (
               <div class="nav-links extension-tech">
                 {project.data.tech.map((tech) => (
-                  <span class="pill">{tech}</span>
+                  <span class="pill tech-pill">
+                    {TECH_ICON_MAP[tech] && (
+                      <img class="tech-pill-icon" src={TECH_ICON_MAP[tech]} alt={`${tech} icon`} loading="lazy" />
+                    )}
+                    <span>{tech}</span>
+                  </span>
                 ))}
               </div>
             )}
@@ -131,7 +137,12 @@ const githubLink =
           {project.data.tech?.length && (
             <div class="nav-links">
               {project.data.tech.map((tech) => (
-                <span class="pill">{tech}</span>
+                <span class="pill tech-pill">
+                  {TECH_ICON_MAP[tech] && (
+                    <img class="tech-pill-icon" src={TECH_ICON_MAP[tech]} alt={`${tech} icon`} loading="lazy" />
+                  )}
+                  <span>{tech}</span>
+                </span>
               ))}
             </div>
           )}
