@@ -23,3 +23,6 @@ Thumbs.db
 # editor/IDE
 .vscode/
 .idea/
+
+docs/
+AGENTS.md
