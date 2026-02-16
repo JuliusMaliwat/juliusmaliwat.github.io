@@ -21,6 +21,8 @@ links:
     url: "https://chromewebstore.google.com/detail/why-am-i-here/placeholder"
   - label: "GitHub"
     url: "https://github.com/JuliusMaliwat/why-am-i-here-extension"
+  - label: "Privacy Policy"
+    url: "https://github.com/JuliusMaliwat/why-am-i-here-extension/blob/main/PRIVACY.md"
 media:
   - alt: "Overlay prompting intention before browsing"
     src: "/projects/why-am-i-here/intention-without-timer.gif"
@@ -39,9 +41,3 @@ Instead of opening a distracting site and deciding too late, users pause first a
 ## Privacy model
 
 All data stays local in the browser. No external tracking, no account requirement, and no cloud sync.
-
-## Roadmap
-
-- Publish stable Chrome Web Store release.
-- Add richer weekly trend reports in Insights.
-- Add quick templates for recurring intentions.
