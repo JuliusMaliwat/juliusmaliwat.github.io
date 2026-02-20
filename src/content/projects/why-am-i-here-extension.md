@@ -17,8 +17,8 @@ tech:
   - "Vite"
 year: "2026"
 links:
-  - label: "Install on Chrome (Placeholder)"
-    url: "https://chromewebstore.google.com/detail/why-am-i-here/placeholder"
+  - label: "Install on Chrome Web Store"
+    url: "https://chromewebstore.google.com/detail/why-am-i-here/ffdjnaneokeaojkbfpiifekidoolkkek"
   - label: "GitHub"
     url: "https://github.com/JuliusMaliwat/why-am-i-here-extension"
   - label: "Privacy Policy"
