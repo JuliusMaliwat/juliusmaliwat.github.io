@@ -12,7 +12,15 @@ const linkedinUrl = findLink("LinkedIn");
 const xUrl = findLink("X");
 ---
 
-<footer id="contact" class="site-footer" aria-label="Contact links" data-reveal>
+<footer
+  id="contact"
+  class="site-footer"
+  aria-label="Contact links"
+  data-reveal
+  data-stagger
+  data-stagger-base="150"
+  data-stagger-selector=".site-footer-inner > *"
+>
   <div class="site-footer-inner">
     <div class="site-footer-signature">
       <p class="site-footer-title">Get in touch</p>

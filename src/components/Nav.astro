@@ -21,7 +21,6 @@ const routeLinks = [
 
 const links = variant === "home" ? homeLinks : variant === "route" ? routeLinks : [];
 const showLinks = links.length > 0;
-const showActions = variant !== "brand-only";
 
 const isRouteActive = (href) => {
   if (!href.startsWith("/")) return false;
@@ -42,43 +41,16 @@ const isRouteActive = (href) => {
           <a
             href={link.href}
             data-nav-section={link.section ?? undefined}
-            class:list={["nav-link", variant === "route" && isRouteActive(link.href) && "is-active"]}
+            class:list={[
+              "nav-link",
+              variant === "route" && "nav-link--route",
+              variant === "route" && isRouteActive(link.href) && "is-active",
+            ]}
             aria-current={variant === "route" && isRouteActive(link.href) ? "page" : undefined}
           >
             {link.label}
           </a>
         ))}
-      </div>
-    )}
-
-    {showActions && (
-      <div class="site-nav-actions">
-        <button class="theme-toggle" type="button" aria-label="Toggle theme" data-theme-toggle>
-          <span class="theme-icon sun" aria-hidden="true">
-            <svg viewBox="0 0 24 24">
-              <path
-                d="M12 4V2m0 20v-2m8-8h2M2 12h2m12.95-6.95 1.41-1.41M5.64 18.36l1.41-1.41m0-11.31L5.64 4.23m12.72 12.72-1.41-1.41M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10z"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.6"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </span>
-          <span class="theme-icon moon" aria-hidden="true">
-            <svg viewBox="0 0 24 24">
-              <path
-                d="M21 15.5A9 9 0 1 1 8.5 3 7 7 0 0 0 21 15.5z"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.6"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </span>
-        </button>
       </div>
     )}
   </nav>

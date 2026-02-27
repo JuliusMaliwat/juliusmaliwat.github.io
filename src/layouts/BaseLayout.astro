@@ -41,15 +41,8 @@ const plausibleDomain = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN;
     </noscript>
     <script>
       (function () {
-        try {
-          const storedTheme = localStorage.getItem("theme");
-          const theme = storedTheme === "light" ? "light" : "dark";
-          document.documentElement.dataset.theme = theme;
-          document.documentElement.style.colorScheme = theme;
-        } catch {
-          document.documentElement.dataset.theme = "dark";
-          document.documentElement.style.colorScheme = "dark";
-        }
+        document.documentElement.dataset.theme = "dark";
+        document.documentElement.style.colorScheme = "dark";
         document.documentElement.dataset.themeReady = "true";
         document.documentElement.classList.remove("theme-pending");
       })();
@@ -84,7 +77,6 @@ const plausibleDomain = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN;
   </head>
   <body>
     <slot />
-    <script defer src="/scripts/theme-toggle.js"></script>
     <script defer src="/scripts/motion.js"></script>
   </body>
 </html>

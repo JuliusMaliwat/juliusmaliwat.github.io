@@ -1,8 +1,8 @@
 (() => {
   const root = document.documentElement;
   let revealObserver;
-  let sectionObserver;
   let resizeBound = false;
+  let sectionNavCleanup = null;
 
   const isReduced = () =>
     root.dataset.motion === "reduced" ||
@@ -27,11 +27,32 @@
     window.scrollTo({ top, behavior });
   };
 
+  const emphasizeSection = (section) => {
+    if (!(section instanceof HTMLElement)) return;
+    if (isReduced()) return;
+
+    section.classList.remove("section-emphasis");
+    window.requestAnimationFrame(() => {
+      section.classList.add("section-emphasis");
+    });
+
+    if (section.dataset.emphasisTimer) {
+      window.clearTimeout(Number(section.dataset.emphasisTimer));
+    }
+
+    const timer = window.setTimeout(() => {
+      section.classList.remove("section-emphasis");
+      section.dataset.emphasisTimer = "";
+    }, 820);
+    section.dataset.emphasisTimer = String(timer);
+  };
+
   const scrollToHash = (hash, { behavior = "smooth", emphasize = false } = {}) => {
     const id = hash.replace(/^#/, "");
     if (!id) return null;
     const target = document.getElementById(id);
     if (!(target instanceof HTMLElement)) return null;
+
     scrollToElement(target, behavior);
     if (emphasize) emphasizeSection(target);
     return target;
@@ -40,6 +61,7 @@
   const bindResize = () => {
     if (resizeBound) return;
     resizeBound = true;
+
     window.addEventListener(
       "resize",
       () => {
@@ -54,31 +76,12 @@
     element.classList.add("is-visible");
   };
 
-  const emphasizeSection = (section) => {
-    if (!(section instanceof HTMLElement)) return;
-    if (isReduced()) return;
-
-    section.classList.remove("section-emphasis");
-    window.requestAnimationFrame(() => {
-      section.classList.add("section-emphasis");
-    });
-
-    if (section.dataset.emphasisTimer) {
-      window.clearTimeout(Number(section.dataset.emphasisTimer));
-    }
-    const timer = window.setTimeout(() => {
-      section.classList.remove("section-emphasis");
-      section.dataset.emphasisTimer = "";
-    }, 700);
-    section.dataset.emphasisTimer = String(timer);
-  };
-
   const applyStagger = (container) => {
     if (!(container instanceof HTMLElement)) return;
     if (!container.hasAttribute("data-stagger")) return;
     if (container.dataset.staggerReady === "true") return;
 
-    const baseDelay = Number(container.dataset.staggerBase ?? "70");
+    const baseDelay = Number(container.dataset.staggerBase ?? "120");
     const selector = container.dataset.staggerSelector ?? ":scope > *";
     const items = Array.from(container.querySelectorAll(selector));
 
@@ -118,8 +121,8 @@
           });
         },
         {
-          rootMargin: "0px 0px -12% 0px",
-          threshold: 0.12,
+          rootMargin: "0px 0px -8% 0px",
+          threshold: 0.2,
         }
       );
     }
@@ -128,6 +131,11 @@
   };
 
   const initSectionNav = () => {
+    if (sectionNavCleanup) {
+      sectionNavCleanup();
+      sectionNavCleanup = null;
+    }
+
     const links = Array.from(document.querySelectorAll("[data-nav-section]")).filter(
       (node) => node instanceof HTMLAnchorElement
     );
@@ -143,8 +151,6 @@
       .filter(Boolean);
 
     if (!sections.length) return;
-
-    const visibility = new Map(sections.map(({ id }) => [id, 0]));
 
     const setActive = (id) => {
       sections.forEach(({ id: sectionId, link }) => {
@@ -165,9 +171,51 @@
       });
     };
 
+    const resolveActiveSection = () => {
+      const offset = getAnchorOffset();
+      const focusLine = window.scrollY + offset + Math.max(96, Math.min(220, Math.round(window.innerHeight * 0.24)));
+      const firstTop = sections[0].section.offsetTop;
+
+      if (focusLine < firstTop + 8) {
+        clearActive();
+        return;
+      }
+
+      let active = sections.find(({ section }) => {
+        const top = section.offsetTop;
+        const bottom = top + section.offsetHeight;
+        return focusLine >= top && focusLine < bottom;
+      });
+
+      if (!active) {
+        let fallback = null;
+        sections.forEach((entry) => {
+          if (entry.section.offsetTop <= focusLine) fallback = entry;
+        });
+        active = fallback;
+      }
+
+      if (!active) {
+        clearActive();
+        return;
+      }
+
+      setActive(active.id);
+    };
+
+    let scrollFrame = 0;
+    const onScroll = () => {
+      if (scrollFrame) return;
+      scrollFrame = window.requestAnimationFrame(() => {
+        resolveActiveSection();
+        scrollFrame = 0;
+      });
+    };
+
     sections.forEach(({ id, link, section }) => {
       if (link.dataset.sectionBound === "true") return;
       link.dataset.sectionBound = "true";
+
       link.addEventListener("click", (event) => {
         event.preventDefault();
         setActive(id);
@@ -177,42 +225,9 @@
       });
     });
 
-    if (sectionObserver) {
-      sectionObserver.disconnect();
-    }
-
-    sectionObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!(entry.target instanceof HTMLElement)) return;
-          visibility.set(entry.target.id, entry.isIntersecting ? entry.intersectionRatio : 0);
-        });
-
-        let bestId = "";
-        let bestRatio = 0;
-
-        visibility.forEach((ratio, id) => {
-          if (ratio > bestRatio) {
-            bestRatio = ratio;
-            bestId = id;
-          }
-        });
-
-        if (bestRatio < 0.2) {
-          clearActive();
-          return;
-        }
-
-        setActive(bestId);
-      },
-      {
-        rootMargin: "-24% 0px -52% 0px",
-        threshold: [0, 0.1, 0.2, 0.35, 0.5, 0.65],
-      }
-    );
-
-    sections.forEach(({ section }) => sectionObserver?.observe(section));
-    clearActive();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    window.addEventListener("orientationchange", onScroll, { passive: true });
 
     const hashId = window.location.hash?.replace("#", "");
     if (hashId) {
@@ -221,8 +236,19 @@
         setActive(target.id);
         scrollToElement(target.section, "auto");
         emphasizeSection(target.section);
+      } else {
+        resolveActiveSection();
       }
+    } else {
+      resolveActiveSection();
     }
+
+    sectionNavCleanup = () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      window.removeEventListener("orientationchange", onScroll);
+      if (scrollFrame) window.cancelAnimationFrame(scrollFrame);
+    };
   };
 
   const initGlobalHashAnchors = () => {
@@ -256,10 +282,15 @@
     document.querySelectorAll("[data-reveal]").forEach(observeReveal);
     initSectionNav();
     initGlobalHashAnchors();
+
     if (window.location.hash) {
-      window.requestAnimationFrame(() => {
-        scrollToHash(window.location.hash, { behavior: "auto", emphasize: true });
-      });
+      const hashId = window.location.hash.replace(/^#/, "");
+      const navTarget = document.querySelector(`[data-nav-section="${hashId}"]`);
+      if (!navTarget) {
+        window.requestAnimationFrame(() => {
+          scrollToHash(window.location.hash, { behavior: "auto", emphasize: true });
+        });
+      }
     }
   };
 

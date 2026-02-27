@@ -4,7 +4,9 @@ Personal website built with Astro and deployed on GitHub Pages.
 
 ## Sections
 - Home (single-page hub with centered hero, anchor navigation, and scroll-to-explore flow)
+- Home nav is text-only and right-aligned (`Experience`, `Skills`, `Projects`)
 - Home nav active state follows section visibility (no preselected tab in hero state)
+- Home nav underline animates on hover/focus and remains persistent on the active section
 - Experience + Education (paired two-column expandable timelines)
 - Skills (premium icon strip treatment)
 - Certifications embedded in Skills
@@ -12,7 +14,7 @@ Personal website built with Astro and deployed on GitHub Pages.
 - Dedicated project detail pages with brand-only header (`Julius.` back to Home)
 - Library (minimal placeholder)
 - Footer contact links + `Download CV`
-- Theme toggle (dark/light), anti-flash preload, and reveal motion system
+- Dark-only theme runtime and staged reveal motion system
 
 Legacy routes redirect to Home anchors:
 - `/about/` -> `/`

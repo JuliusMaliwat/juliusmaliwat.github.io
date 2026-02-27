@@ -59,7 +59,7 @@ const groupedSkills = skillCategoryOrder
   <main class="page page-home">
     <Nav email={email} />
 
-    <section class="home-hero home-hero--center" data-reveal data-stagger>
+    <section class="home-hero home-hero--center" data-reveal data-stagger data-stagger-base="140">
       <p class="hero-pill" data-reveal>Data Engineering - AI</p>
       <h1 class="home-greeting" data-typewriter data-reveal>Hi, I'm Julius.</h1>
       <div class="cta-group cta-group--center" data-reveal>
@@ -72,16 +72,23 @@ const groupedSkills = skillCategoryOrder
       </a>
     </section>
 
-    <section id="experience" class="section-block section-cv" data-reveal>
+    <section
+      id="experience"
+      class="section-block section-cv section-screen"
+      data-reveal
+      data-stagger
+      data-stagger-base="180"
+      data-stagger-selector=".cv-column"
+    >
       <div class="cv-columns">
         <article class="cv-column" data-reveal>
           <h2>Experience</h2>
-          <div class="timeline timeline--cards">
+          <div class="timeline timeline--cards" data-stagger data-stagger-base="120" data-stagger-selector=".accordion-item">
             {experienceSorted.map((role) => (
-              <details class="accordion-item">
+              <details class="accordion-item" data-reveal>
                 <summary>
                   <span class="timeline-date muted">
-                    {role.data.startDate} — {role.data.endDate ?? "Present"}
+                    {role.data.startDate} - {role.data.endDate ?? "Present"}
                   </span>
                   <div class="timeline-content">
                     <strong>{role.data.role}</strong>
@@ -135,14 +142,14 @@ const groupedSkills = skillCategoryOrder
           </div>
         </article>
 
-        <article class="cv-column" data-reveal>
+        <article class="cv-column" data-reveal data-reveal-delay="160">
           <h2>Education</h2>
-          <div class="timeline timeline--cards">
+          <div class="timeline timeline--cards" data-stagger data-stagger-base="120" data-stagger-selector=".accordion-item">
             {educationSorted.map((item) => (
-              <details class="accordion-item">
+              <details class="accordion-item" data-reveal>
                 <summary>
                   <span class="timeline-date muted">
-                    {item.data.startDate} — {item.data.endDate}
+                    {item.data.startDate} - {item.data.endDate}
                   </span>
                   <div class="timeline-content">
                     <strong>
@@ -220,13 +227,13 @@ const groupedSkills = skillCategoryOrder
       </div>
     </section>
 
-    <section id="skills" class="section-block" data-reveal>
+    <section id="skills" class="section-block section-screen" data-reveal>
       <h2>Skills</h2>
-      <div class="skills-groups">
+      <div class="skills-groups" data-stagger data-stagger-base="140" data-stagger-selector=".skills-group">
         {groupedSkills.map((group) => (
-          <div class="skills-group">
+          <div class="skills-group" data-reveal>
             <div class="eyebrow">{group.category}</div>
-            <div class="skills-grid">
+            <div class="skills-grid" data-stagger data-stagger-base="70" data-stagger-selector=".skill-icon-only">
               {group.items.map((skill) => (
                 <span
                   class="skill-icon-only"
@@ -234,6 +241,7 @@ const groupedSkills = skillCategoryOrder
                   data-skill={skill.data.name}
                   title={skill.data.name}
                   tabindex="0"
+                  data-reveal
                 >
                   <img class="skill-icon" src={skill.data.icon} alt={`${skill.data.name} icon`} loading="lazy" />
                 </span>
@@ -244,7 +252,7 @@ const groupedSkills = skillCategoryOrder
       </div>
 
       {certificationsSorted.length > 0 && (
-        <div class="skills-certifications">
+        <div class="skills-certifications" data-reveal data-reveal-delay="180">
           <h3>Certifications</h3>
           <div class="cert-list cert-list--embedded">
             {certificationsSorted.map((cert) => (
@@ -268,10 +276,10 @@ const groupedSkills = skillCategoryOrder
       )}
     </section>
 
-    <section id="projects" class="section-block" data-reveal>
+    <section id="projects" class="section-block section-screen" data-reveal>
       <h2>Projects</h2>
       {visibleProjects.length > 0 ? (
-        <div class="grid projects-home-grid">
+        <div class="grid projects-home-grid" data-stagger data-stagger-base="130" data-stagger-selector=".project-card">
           {visibleProjects.map((project) => (
             <ProjectCard project={project} />
           ))}
