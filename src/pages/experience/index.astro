@@ -1,13 +1,13 @@
 ---
-const redirectTo = "/about/";
+const redirectTo = "/#experience";
 ---
 
 <html lang="en">
   <head>
-    <meta http-equiv="refresh" content="0; url=/about/" />
-    <link rel="canonical" href="/about/" />
+    <meta http-equiv="refresh" content={`0; url=${redirectTo}`} />
+    <link rel="canonical" href={redirectTo} />
   </head>
   <body>
-    <p>Redirecting to <a href="/about/">About Me</a>...</p>
+    <p>Redirecting to <a href={redirectTo}>Experience</a>...</p>
   </body>
 </html>

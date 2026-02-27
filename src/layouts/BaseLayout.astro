@@ -17,6 +17,16 @@ const plausibleDomain = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN;
 <!doctype html>
 <html lang={lang} class="theme-pending">
   <head>
+    <script>
+      (() => {
+        try {
+          const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          document.documentElement.dataset.motion = reduced ? "reduced" : "full";
+        } catch {
+          document.documentElement.dataset.motion = "full";
+        }
+      })();
+    </script>
     <style>
       html.theme-pending body {
         visibility: hidden;
@@ -75,5 +85,6 @@ const plausibleDomain = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN;
   <body>
     <slot />
     <script defer src="/scripts/theme-toggle.js"></script>
+    <script defer src="/scripts/motion.js"></script>
   </body>
 </html>

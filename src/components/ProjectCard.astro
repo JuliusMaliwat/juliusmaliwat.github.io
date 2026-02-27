@@ -1,30 +1,39 @@
 ---
 // Card summary for project lists.
 import { TECH_ICON_MAP } from "../consts";
-const { project } = Astro.props;
+const { project, featured = false } = Astro.props;
 ---
 
-<article class="card">
-  {project.data.media?.[0] && (
-    <a href={`/projects/${project.slug}/`} class="project-card-media">
+<article class:list={["project-card", featured && "project-card--featured"]} data-reveal>
+  <a href={`/projects/${project.slug}/`} class="project-card-media" aria-label={`Open ${project.data.title}`}>
+    {project.data.media?.[0] ? (
       <img src={project.data.media[0].src} alt={project.data.media[0].alt} loading="lazy" />
+    ) : (
+      <span class="project-card-media-fallback" aria-hidden="true"></span>
+    )}
+    <span class="project-card-overlay" aria-hidden="true"></span>
+    <span class="project-card-type">{project.data.type}</span>
+    <span class="project-card-headline">
+      <strong>{project.data.title}</strong>
+      <span>{project.data.summary}</span>
+    </span>
+  </a>
+
+  <div class="project-card-body">
+    {project.data.tech?.length && (
+      <div class="tech-pills">
+        {project.data.tech.map((tech) => (
+          <span class="pill tech-pill">
+            {TECH_ICON_MAP[tech] && (
+              <img class="tech-pill-icon" src={TECH_ICON_MAP[tech]} alt={`${tech} icon`} loading="lazy" />
+            )}
+            <span>{tech}</span>
+          </span>
+        ))}
+      </div>
+    )}
+    <a href={`/projects/${project.slug}/`} class="inline-link project-card-cta">
+      View case study →
     </a>
-  )}
-  <div class="eyebrow">{project.data.type}</div>
-  <h3>
-    <a href={`/projects/${project.slug}/`}>{project.data.title}</a>
-  </h3>
-  <p class="muted">{project.data.summary}</p>
-  {project.data.tech?.length && (
-    <div class="nav-links" style="margin-top: 12px;">
-      {project.data.tech.map((tech) => (
-        <span class="pill tech-pill">
-          {TECH_ICON_MAP[tech] && (
-            <img class="tech-pill-icon" src={TECH_ICON_MAP[tech]} alt={`${tech} icon`} loading="lazy" />
-          )}
-          <span>{tech}</span>
-        </span>
-      ))}
-    </div>
-  )}
+  </div>
 </article>

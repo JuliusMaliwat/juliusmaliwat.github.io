@@ -3,23 +3,28 @@
 Personal website built with Astro and deployed on GitHub Pages.
 
 ## Sections
-- Home (CTA-only: email + CV download)
-- About Me (combined Experience + Education)
-- Certifications
-- Skills (grouped by CV taxonomy with icons)
-- Hobbies & Interests
-- Projects
-- Dedicated project detail pages (example: `/projects/why-am-i-here-extension/`)
-- Library
-- Company logos + links in Experience
-- University project cards + thesis links in Education
-- Certification badge image in Certifications
-- Fixed contact icons (email + GitHub + LinkedIn) across all pages
-- Theme toggle (dark/light) and typewriter greeting on Home
+- Home (single-page hub with centered hero, anchor navigation, and scroll-to-explore flow)
+- Home nav active state follows section visibility (no preselected tab in hero state)
+- Experience + Education (paired two-column expandable timelines)
+- Skills (premium icon strip treatment)
+- Certifications embedded in Skills
+- Projects section on Home
+- Dedicated project detail pages with brand-only header (`Julius.` back to Home)
+- Library (minimal placeholder)
+- Footer contact links + `Download CV`
+- Theme toggle (dark/light), anti-flash preload, and reveal motion system
+
+Legacy routes redirect to Home anchors:
+- `/about/` -> `/`
+- `/experience/` -> `/#experience`
+- `/education/` -> `/#education`
+- `/contact/` -> `/#contact`
+- `/projects/` -> `/#projects`
 
 ## Stack
 - Astro (static site generator)
 - GitHub Pages (via GitHub Actions)
+- Native CSS + lightweight vanilla JS motion (no animation libraries)
 
 ## Local development
 ```bash
@@ -34,15 +39,13 @@ Content lives in `src/content/`:
 - `education/` for university studies, thesis, and projects
 - `certifications/` for credential listings
 - `skills/` for categorized skill icons
-- `interests/` for hobbies and interests
+- `interests/` for archived hobbies/interests content (not rendered in current Home)
 - `projects/` for project landing pages
-
-The Home CTAs link to email and `public/cv.pdf`. Update `public/cv.pdf` whenever the CV changes.
 
 `Projects` supports detail routes per project slug, for example:
 `/projects/why-am-i-here-extension/`
 
-Social links used by the fixed contact icon bar are also defined in `src/content/profile/index.md`.
+Social links used in the footer are defined in `src/content/profile/index.md`.
 
 ## Analytics (optional)
 If you want lightweight analytics, set:

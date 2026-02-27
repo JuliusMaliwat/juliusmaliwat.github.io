@@ -1,7 +1,7 @@
 // Centralized site-level constants used across pages and layout.
 export const SITE_TITLE = "Julius Maliwat";
 export const SITE_DESCRIPTION =
-  "Software engineer in Milan focused on clean, thoughtful products.";
+  "Data Engineer in Milan building reliable data platforms and product-minded analytics.";
 export const SITE_URL = "https://juliusmaliwat.github.io";
 
 // Shared icon lookup used in tech pills across About and Projects.

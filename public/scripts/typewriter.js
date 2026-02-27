@@ -14,17 +14,20 @@
     greeting.textContent = "";
 
     let index = 0;
+    const charDelay = 82;
+    const startDelay = 260;
+
     const step = () => {
       index += 1;
       greeting.textContent = text.slice(0, index);
       if (index < text.length) {
-        setTimeout(step, 70);
+        setTimeout(step, charDelay);
       } else {
         greeting.classList.remove("is-typing");
       }
     };
 
-    setTimeout(step, 220);
+    setTimeout(step, startDelay);
   };
 
   if (document.readyState === "loading") {

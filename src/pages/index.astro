@@ -1,34 +1,289 @@
 ---
-// Home page: minimal hero (greeting + role + education) and two actions.
+// Home page: one-page portfolio with anchored sections.
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import { TECH_ICON_MAP } from "../consts";
 
 const profileEntry = (await getCollection("profile"))[0];
-
 const profile = profileEntry?.data;
+const experience = await getCollection("experience");
+const education = await getCollection("education");
+const certifications = await getCollection("certifications");
+const skills = await getCollection("skills");
+const projects = await getCollection("projects");
+
 const email = profile?.email ?? "juliusmaliwat.work@gmail.com";
+const githubLogo = "/logos/github.svg";
+
+const parseStartDate = (value = "") => {
+  const parts = value.split("/");
+  if (parts.length === 2) {
+    const [month, year] = parts;
+    return new Date(Number(year), Number(month) - 1, 1).getTime();
+  }
+  const year = Number(value);
+  return Number.isFinite(year) ? new Date(year, 0, 1).getTime() : 0;
+};
+
+const sortByStartDesc = (a, b) => parseStartDate(b.data.startDate) - parseStartDate(a.data.startDate);
+const experienceSorted = [...experience].sort(sortByStartDesc);
+const educationSorted = [...education].sort(sortByStartDesc);
+const certificationsSorted = [...certifications].sort((a, b) => Date.parse(b.data.date) - Date.parse(a.data.date));
+
+const visibleProjects = projects.filter((project) => !project.data.draft);
+
+const skillCategoryOrder = [
+  "Programming & Development",
+  "Data Engineering & Cloud",
+  "Data Science, AI & Analytics",
+];
+
+const groupedSkills = skillCategoryOrder
+  .map((category) => ({
+    category,
+    items: skills
+      .filter((entry) => entry.data.category === category)
+      .sort(
+        (a, b) =>
+          (a.data.order ?? Number.MAX_SAFE_INTEGER) -
+            (b.data.order ?? Number.MAX_SAFE_INTEGER) || a.data.name.localeCompare(b.data.name)
+      ),
+  }))
+  .filter((group) => group.items.length > 0);
 ---
 
 <BaseLayout description={profile?.bioShort}>
-  <main>
-    <Nav />
+  <main class="page page-home">
+    <Nav email={email} />
 
-    <section class="home-hero">
-      <h1 class="home-greeting" data-typewriter>
-        {profile?.homeGreeting ?? "hello, i'm julius :)"}
-      </h1>
-      <p class="home-line">{profile?.headline ?? "Data Engineer @ Quantyca"}</p>
-      <p class="home-line muted">{profile?.bioShort ?? "MSc Data Science @ University of Bicocca"}</p>
-      <div class="cta-group">
-        <a class="button" href={`mailto:${email}`}>Get in touch</a>
-        <a class="button ghost" href="/cv.pdf" download>Download CV</a>
+    <section class="home-hero home-hero--center" data-reveal data-stagger>
+      <p class="hero-pill" data-reveal>Data Engineering - AI</p>
+      <h1 class="home-greeting" data-typewriter data-reveal>Hi, I'm Julius.</h1>
+      <div class="cta-group cta-group--center" data-reveal>
+        <a class="button" href="#projects">View my work</a>
+        <a class="button ghost" href="#contact">Get in touch</a>
+      </div>
+      <a class="scroll-cue" href="#experience" data-reveal>
+        <span>Scroll to explore</span>
+        <span aria-hidden="true">↓</span>
+      </a>
+    </section>
+
+    <section id="experience" class="section-block section-cv" data-reveal>
+      <div class="cv-columns">
+        <article class="cv-column" data-reveal>
+          <h2>Experience</h2>
+          <div class="timeline timeline--cards">
+            {experienceSorted.map((role) => (
+              <details class="accordion-item">
+                <summary>
+                  <span class="timeline-date muted">
+                    {role.data.startDate} — {role.data.endDate ?? "Present"}
+                  </span>
+                  <div class="timeline-content">
+                    <strong>{role.data.role}</strong>
+                    {role.data.companyUrl ? (
+                      <a class="company-link muted" href={role.data.companyUrl} target="_blank" rel="noreferrer">
+                        {role.data.companyLogo && (
+                          <img
+                            class="company-logo"
+                            src={role.data.companyLogo}
+                            alt={`${role.data.company} logo`}
+                            loading="lazy"
+                          />
+                        )}
+                        <span>
+                          {role.data.company}
+                          {role.data.location ? ` · ${role.data.location}` : ""}
+                        </span>
+                      </a>
+                    ) : (
+                      <div class="muted">
+                        {role.data.company}
+                        {role.data.location ? ` · ${role.data.location}` : ""}
+                      </div>
+                    )}
+                  </div>
+                </summary>
+                <div class="accordion-body">
+                  <p>{role.data.summary}</p>
+                  {role.data.highlights?.length && (
+                    <ul>
+                      {role.data.highlights.map((item) => (
+                        <li>{item}</li>
+                      ))}
+                    </ul>
+                  )}
+                  {role.data.tech?.length && (
+                    <div class="tech-pills">
+                      {role.data.tech.map((tech) => (
+                        <span class="pill tech-pill">
+                          {TECH_ICON_MAP[tech] && (
+                            <img class="tech-pill-icon" src={TECH_ICON_MAP[tech]} alt={`${tech} icon`} loading="lazy" />
+                          )}
+                          <span>{tech}</span>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </details>
+            ))}
+          </div>
+        </article>
+
+        <article class="cv-column" data-reveal>
+          <h2>Education</h2>
+          <div class="timeline timeline--cards">
+            {educationSorted.map((item) => (
+              <details class="accordion-item">
+                <summary>
+                  <span class="timeline-date muted">
+                    {item.data.startDate} — {item.data.endDate}
+                  </span>
+                  <div class="timeline-content">
+                    <strong>
+                      {item.data.degreeUrl ? (
+                        <a class="degree-link" href={item.data.degreeUrl} target="_blank" rel="noreferrer">
+                          {item.data.degree}
+                        </a>
+                      ) : (
+                        item.data.degree
+                      )}
+                    </strong>
+                    {item.data.grade && <div class="grade-text">{item.data.grade}</div>}
+                    <div class="institution-line muted">
+                      {item.data.institutionLogo && (
+                        <img
+                          class="institution-logo"
+                          src={item.data.institutionLogo}
+                          alt={`${item.data.institution} logo`}
+                          loading="lazy"
+                        />
+                      )}
+                      <span>
+                        {item.data.institution}
+                        {item.data.location ? ` · ${item.data.location}` : ""}
+                      </span>
+                    </div>
+                  </div>
+                </summary>
+                <div class="accordion-body">
+                  {item.data.thesis && (
+                    <p>
+                      <strong>Thesis:</strong>{" "}
+                      {item.data.thesisUrl ? (
+                        <a class="inline-link repo-link" href={item.data.thesisUrl} target="_blank" rel="noreferrer">
+                          <img class="repo-link-icon" src={githubLogo} alt="GitHub" loading="lazy" />
+                          <span>{item.data.thesis}</span>
+                        </a>
+                      ) : (
+                        item.data.thesis
+                      )}
+                    </p>
+                  )}
+                  {item.data.courses?.length && (
+                    <>
+                      <div class="eyebrow">Relevant coursework</div>
+                      <ul class="course-list">
+                        {item.data.courses.map((course) => (
+                          <li>{course}</li>
+                        ))}
+                      </ul>
+                    </>
+                  )}
+                  {item.data.universityProjects?.length && (
+                    <>
+                      <div class="eyebrow">University projects</div>
+                      <div class="uni-project-grid">
+                        {item.data.universityProjects.map((project) => (
+                          <a class="uni-project-card" href={project.url} target="_blank" rel="noreferrer">
+                            <strong>{project.title}</strong>
+                            {project.course && <span class="muted">{project.course}</span>}
+                            <span class="uni-project-link">
+                              <img class="repo-link-icon" src={githubLogo} alt="GitHub" loading="lazy" />
+                              <span>View on GitHub</span>
+                            </span>
+                          </a>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </div>
+              </details>
+            ))}
+          </div>
+        </article>
       </div>
     </section>
 
-    <!-- Fixed contact icons are rendered by the Footer component. -->
-    <Footer email={profile?.email} links={profile?.links} />
+    <section id="skills" class="section-block" data-reveal>
+      <h2>Skills</h2>
+      <div class="skills-groups">
+        {groupedSkills.map((group) => (
+          <div class="skills-group">
+            <div class="eyebrow">{group.category}</div>
+            <div class="skills-grid">
+              {group.items.map((skill) => (
+                <span
+                  class="skill-icon-only"
+                  aria-label={skill.data.name}
+                  data-skill={skill.data.name}
+                  title={skill.data.name}
+                  tabindex="0"
+                >
+                  <img class="skill-icon" src={skill.data.icon} alt={`${skill.data.name} icon`} loading="lazy" />
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {certificationsSorted.length > 0 && (
+        <div class="skills-certifications">
+          <h3>Certifications</h3>
+          <div class="cert-list cert-list--embedded">
+            {certificationsSorted.map((cert) => (
+              <div class="cert-item">
+                <div class="cert-main">
+                  {cert.data.badgeImage && (
+                    <img class="cert-badge" src={cert.data.badgeImage} alt={`${cert.data.title} badge`} loading="lazy" />
+                  )}
+                  <div>
+                    <strong>{cert.data.title}</strong>
+                    <div class="muted">{cert.data.issuer}</div>
+                  </div>
+                </div>
+                <a class="cert-link" href={cert.data.credentialUrl} target="_blank" rel="noreferrer">
+                  View credential
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </section>
+
+    <section id="projects" class="section-block" data-reveal>
+      <h2>Projects</h2>
+      {visibleProjects.length > 0 ? (
+        <div class="grid projects-home-grid">
+          {visibleProjects.map((project) => (
+            <ProjectCard project={project} />
+          ))}
+        </div>
+      ) : (
+        <div class="project-empty">
+          <p class="muted">New case studies are being prepared and will be published soon.</p>
+        </div>
+      )}
+    </section>
+
+    <Footer email={profile?.email} location={profile?.location} links={profile?.links} />
 
     <script defer src="/scripts/typewriter.js"></script>
   </main>

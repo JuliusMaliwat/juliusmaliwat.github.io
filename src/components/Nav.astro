@@ -1,71 +1,85 @@
 ---
-// Top navigation with active-state highlighting.
-const links = [
-  { label: "About Me", href: "/about/" },
-  { label: "Projects", href: "/projects/" },
-  { label: "Library", href: "/library/" },
+// Top navigation with explicit variants:
+// - home: section anchors
+// - route: route links
+// - brand-only: only site brand link
+const currentPath = Astro.url.pathname;
+const { variant: variantProp } = Astro.props;
+const isHomePath = currentPath === "/";
+const variant = variantProp ?? (isHomePath ? "home" : "route");
+
+const homeLinks = [
+  { label: "Experience", href: "#experience", section: "experience" },
+  { label: "Skills", href: "#skills", section: "skills" },
+  { label: "Projects", href: "#projects", section: "projects" },
 ];
 
-const currentPath = Astro.url.pathname;
+const routeLinks = [
+  { label: "Home", href: "/" },
+  { label: "Projects", href: "/#projects" },
+];
+
+const links = variant === "home" ? homeLinks : variant === "route" ? routeLinks : [];
+const showLinks = links.length > 0;
+const showActions = variant !== "brand-only";
+
+const isRouteActive = (href) => {
+  if (!href.startsWith("/")) return false;
+  if (href === "/") return currentPath === "/";
+  return currentPath.startsWith(href);
+};
 ---
 
-<nav class="nav" aria-label="Main">
-  <div class="nav-links">
-    <a
-      href="/"
-      class="nav-home"
-      aria-label="Home"
-      aria-current={currentPath === "/" ? "page" : undefined}
-    >
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path
-          d="M3 10.5 12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.6"
-          stroke-linejoin="round"
-        />
-      </svg>
+<header class:list={["site-nav-shell", variant === "brand-only" && "site-nav-shell--brand-only"]}>
+  <nav class:list={["site-nav", variant === "brand-only" && "site-nav--brand-only"]} aria-label="Main">
+    <a href="/" class="site-brand" aria-label="Homepage">
+      <span class="brand-text">Julius.</span>
     </a>
-    {links.map((link) => (
-      <a
-        href={link.href}
-        aria-current={currentPath === link.href ? "page" : undefined}
-      >
-        {link.label}
-      </a>
-    ))}
-    <!-- Theme toggle button (moon/sun icons are swapped via CSS). -->
-    <button
-      class="theme-toggle"
-      type="button"
-      aria-label="Toggle theme"
-      data-theme-toggle
-    >
-      <span class="theme-icon sun" aria-hidden="true">
-        <svg viewBox="0 0 24 24">
-          <path
-            d="M12 4V2m0 20v-2m8-8h2M2 12h2m12.95-6.95 1.41-1.41M5.64 18.36l1.41-1.41m0-11.31L5.64 4.23m12.72 12.72-1.41-1.41M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10z"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.6"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-      </span>
-      <span class="theme-icon moon" aria-hidden="true">
-        <svg viewBox="0 0 24 24">
-          <path
-            d="M21 15.5A9 9 0 1 1 8.5 3 7 7 0 0 0 21 15.5z"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.6"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-      </span>
-    </button>
-  </div>
-</nav>
+
+    {showLinks && (
+      <div class="site-nav-links">
+        {links.map((link) => (
+          <a
+            href={link.href}
+            data-nav-section={link.section ?? undefined}
+            class:list={["nav-link", variant === "route" && isRouteActive(link.href) && "is-active"]}
+            aria-current={variant === "route" && isRouteActive(link.href) ? "page" : undefined}
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
+    )}
+
+    {showActions && (
+      <div class="site-nav-actions">
+        <button class="theme-toggle" type="button" aria-label="Toggle theme" data-theme-toggle>
+          <span class="theme-icon sun" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 4V2m0 20v-2m8-8h2M2 12h2m12.95-6.95 1.41-1.41M5.64 18.36l1.41-1.41m0-11.31L5.64 4.23m12.72 12.72-1.41-1.41M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10z"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+          <span class="theme-icon moon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M21 15.5A9 9 0 1 1 8.5 3 7 7 0 0 0 21 15.5z"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+        </button>
+      </div>
+    )}
+  </nav>
+</header>

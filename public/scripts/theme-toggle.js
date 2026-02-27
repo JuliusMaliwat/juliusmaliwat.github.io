@@ -1,11 +1,6 @@
 (() => {
   const THEME_KEY = "theme";
-
-  const applyTheme = (theme) => {
-    document.documentElement.dataset.theme = theme;
-    document.documentElement.style.colorScheme = theme;
-    document.documentElement.dataset.themeReady = "true";
-  };
+  const root = document.documentElement;
 
   const getStoredTheme = () => {
     try {
@@ -19,31 +14,47 @@
     try {
       localStorage.setItem(THEME_KEY, theme);
     } catch {
-      // If storage is blocked, we still apply the theme for this session.
+      // Ignore storage failures; theme still works for this session.
     }
   };
 
-  const initThemeToggle = () => {
+  const resolveTheme = () => {
     const stored = getStoredTheme();
-    if (stored === "light" || stored === "dark") {
-      applyTheme(stored);
-    }
+    if (stored === "light" || stored === "dark") return stored;
+    return root.dataset.theme === "light" ? "light" : "dark";
+  };
 
-    const toggle = document.querySelector("[data-theme-toggle]");
-    if (!toggle) return;
+  const applyTheme = (theme) => {
+    root.dataset.theme = theme;
+    root.style.colorScheme = theme;
+    root.dataset.themeReady = "true";
+  };
 
-    toggle.setAttribute(
-      "aria-pressed",
-      document.documentElement.dataset.theme === "dark"
-    );
+  const updateToggleState = () => {
+    const isLight = root.dataset.theme === "light";
+    document.querySelectorAll("[data-theme-toggle]").forEach((toggle) => {
+      toggle.setAttribute("aria-pressed", String(isLight));
+      toggle.setAttribute("aria-label", isLight ? "Switch to dark mode" : "Switch to light mode");
+    });
+  };
+
+  const bindToggle = (toggle) => {
+    if (!(toggle instanceof HTMLElement)) return;
+    if (toggle.dataset.themeBound === "true") return;
+    toggle.dataset.themeBound = "true";
 
     toggle.addEventListener("click", () => {
-      const next =
-        document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+      const next = root.dataset.theme === "dark" ? "light" : "dark";
       applyTheme(next);
       setStoredTheme(next);
-      toggle.setAttribute("aria-pressed", next === "dark");
+      updateToggleState();
     });
+  };
+
+  const initThemeToggle = () => {
+    applyTheme(resolveTheme());
+    document.querySelectorAll("[data-theme-toggle]").forEach(bindToggle);
+    updateToggleState();
   };
 
   if (document.readyState === "loading") {

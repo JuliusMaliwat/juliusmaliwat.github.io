@@ -1,35 +1,13 @@
 ---
-// Projects index: list of all personal/university projects.
-import { getCollection } from "astro:content";
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import Nav from "../../components/Nav.astro";
-import Footer from "../../components/Footer.astro";
-import ProjectCard from "../../components/ProjectCard.astro";
-
-const profileEntry = (await getCollection("profile"))[0];
-const profile = profileEntry?.data;
-const projects = await getCollection("projects");
-const visibleProjects = projects.filter((project) => !project.data.draft);
+const redirectTo = "/#projects";
 ---
 
-<BaseLayout title="Projects" description="Personal project landing pages and experiments.">
-  <main>
-    <Nav />
-    <h1>Projects</h1>
-    <p class="lead">Landing pages for selected work and experiments.</p>
-
-    {visibleProjects.length === 0 ? (
-      <div class="card">
-        <p class="muted">Projects will be published here soon.</p>
-      </div>
-    ) : (
-      <div class="grid two">
-        {visibleProjects.map((project) => (
-          <ProjectCard project={project} />
-        ))}
-      </div>
-    )}
-
-    <Footer email={profile?.email} location={profile?.location} links={profile?.links} />
-  </main>
-</BaseLayout>
+<html lang="en">
+  <head>
+    <meta http-equiv="refresh" content={`0; url=${redirectTo}`} />
+    <link rel="canonical" href={redirectTo} />
+  </head>
+  <body>
+    <p>Redirecting to <a href={redirectTo}>Projects</a>...</p>
+  </body>
+</html>

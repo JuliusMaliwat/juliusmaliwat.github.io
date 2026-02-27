@@ -29,13 +29,13 @@ const githubLink =
 ---
 
 <BaseLayout title={project.data.title} description={project.data.summary}>
-  <main class={isWhyAmIHere ? "project-page project-page--extension" : "project-page"}>
-    <Nav />
+  <main class={isWhyAmIHere ? "page project-page project-page--extension" : "page project-page"}>
+    <Nav variant="brand-only" />
     {isWhyAmIHere ? (
       <>
-        <section class="extension-hero">
+        <section class="extension-hero" data-reveal>
           <div class="extension-hero-copy">
-            <div class="eyebrow">Chrome Extension</div>
+            <div class="eyebrow">Chrome extension case study</div>
             <div class="extension-hero-title">
               <span class="extension-logo-wrap" aria-hidden="true">
                 <img
@@ -56,7 +56,7 @@ const githubLink =
             <p class="lead">{project.data.summary}</p>
             <p class="muted extension-subcopy">{project.data.solution}</p>
             {project.data.tech?.length && (
-              <div class="nav-links extension-tech">
+              <div class="tech-pills extension-tech">
                 {project.data.tech.map((tech) => (
                   <span class="pill tech-pill">
                     {TECH_ICON_MAP[tech] && (
@@ -75,7 +75,7 @@ const githubLink =
               )}
               {githubLink && (
                 <a class="button ghost" href={githubLink.url} target="_blank" rel="noreferrer">
-                  View Source
+                  View source
                 </a>
               )}
             </div>
@@ -88,7 +88,7 @@ const githubLink =
         </section>
 
         {project.data.highlights?.length && (
-          <section>
+          <section class="section-block" data-reveal>
             <h2>Why it works</h2>
             <div class="extension-highlights">
               {project.data.highlights.map((item) => (
@@ -100,22 +100,22 @@ const githubLink =
           </section>
         )}
 
-        <section>
+        <section class="section-block" data-reveal>
           <h2>How it works</h2>
           <div class="extension-steps">
             <p><strong>1.</strong> Select the distracting domains you want to guard.</p>
-            <p><strong>2.</strong> When a domain opens, the extension asks "why am i here?".</p>
-            <p><strong>3.</strong> Add an intention and a timer, then browse with visible context.</p>
-            <p><strong>4.</strong> When time expires, the prompt returns so you can recommit.</p>
+            <p><strong>2.</strong> When a domain opens, the extension asks why you are there.</p>
+            <p><strong>3.</strong> Set an intention and a timer before continuing.</p>
+            <p><strong>4.</strong> When time expires, the prompt returns so the session stays intentional.</p>
           </div>
         </section>
 
         {galleryMedia.length > 0 && (
-          <section>
+          <section class="section-block" data-reveal>
             <h2>Product screens</h2>
-            <div class="extension-gallery">
+            <div class="extension-gallery" data-stagger>
               {galleryMedia.map((item) => (
-                <figure class="extension-gallery-item">
+                <figure class="extension-gallery-item" data-reveal>
                   <img src={item.src} alt={item.alt} loading="lazy" />
                 </figure>
               ))}
@@ -123,19 +123,19 @@ const githubLink =
           </section>
         )}
 
-        <section>
+        <section class="section-block" data-reveal>
           <h2>Details</h2>
           <Content />
         </section>
       </>
     ) : (
       <>
-        <section>
+        <section class="section-heading" data-reveal>
           <div class="eyebrow">{project.data.type}</div>
           <h1 class="hero-title">{project.data.title}</h1>
           <p class="lead">{project.data.summary}</p>
           {project.data.tech?.length && (
-            <div class="nav-links">
+            <div class="tech-pills">
               {project.data.tech.map((tech) => (
                 <span class="pill tech-pill">
                   {TECH_ICON_MAP[tech] && (
@@ -147,9 +147,9 @@ const githubLink =
             </div>
           )}
           {project.data.links?.length && (
-            <div class="nav-links" style="margin-top: 16px;">
+            <div class="project-links">
               {project.data.links.map((link) => (
-                <a href={link.url} target="_blank" rel="noreferrer">
+                <a href={link.url} target="_blank" rel="noreferrer" class="inline-link">
                   {link.label}
                 </a>
               ))}
@@ -157,7 +157,7 @@ const githubLink =
           )}
         </section>
 
-        <section>
+        <section class="section-block" data-reveal>
           <h2>Overview</h2>
           {project.data.problem && (
             <p><strong>Problem:</strong> {project.data.problem}</p>
@@ -174,7 +174,7 @@ const githubLink =
           )}
         </section>
 
-        <section>
+        <section class="section-block" data-reveal>
           <h2>Details</h2>
           <Content />
         </section>
@@ -184,4 +184,3 @@ const githubLink =
     <Footer email={profile?.email} location={profile?.location} links={profile?.links} />
   </main>
 </BaseLayout>
-
