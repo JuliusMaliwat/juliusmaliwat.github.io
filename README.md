@@ -5,8 +5,12 @@ Personal website built with Astro and deployed on GitHub Pages.
 ## Sections
 - Home (single-page hub with centered hero, anchor navigation, and scroll-to-explore flow)
 - Home nav is text-only and right-aligned (`Experience`, `Skills`, `Projects`)
+- Mobile nav switches to a Camilla-style 3-line menu with full-screen top-down overlay motion
 - Home nav active state follows section visibility (no preselected tab in hero state)
 - Home nav underline animates on hover/focus and remains persistent on the active section
+- Mobile hero stays centered and keeps first viewport focused on Home content only
+- Mobile CTAs keep intrinsic two-column sizing across phone widths (no inflation)
+- Mobile hamburger uses a clean line icon with no circular shell
 - Experience + Education (paired two-column expandable timelines)
 - Skills (premium icon strip treatment)
 - Certifications embedded in Skills

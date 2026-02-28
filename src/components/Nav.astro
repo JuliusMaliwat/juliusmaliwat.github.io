@@ -36,22 +36,154 @@ const isRouteActive = (href) => {
     </a>
 
     {showLinks && (
-      <div class="site-nav-links">
-        {links.map((link) => (
-          <a
-            href={link.href}
-            data-nav-section={link.section ?? undefined}
-            class:list={[
-              "nav-link",
-              variant === "route" && "nav-link--route",
-              variant === "route" && isRouteActive(link.href) && "is-active",
-            ]}
-            aria-current={variant === "route" && isRouteActive(link.href) ? "page" : undefined}
-          >
-            {link.label}
-          </a>
-        ))}
-      </div>
+      <>
+        <button
+          class="mobile-menu-toggle"
+          type="button"
+          aria-label="Open navigation menu"
+          aria-expanded="false"
+          aria-controls="mobile-nav-panel"
+          data-mobile-nav-toggle
+        >
+          <span class="mobile-menu-line"></span>
+          <span class="mobile-menu-line"></span>
+          <span class="mobile-menu-line"></span>
+        </button>
+
+        <div class="site-nav-links">
+          {links.map((link) => (
+            <a
+              href={link.href}
+              data-nav-section={link.section ?? undefined}
+              class:list={[
+                "nav-link",
+                variant === "route" && "nav-link--route",
+                variant === "route" && isRouteActive(link.href) && "is-active",
+              ]}
+              aria-current={variant === "route" && isRouteActive(link.href) ? "page" : undefined}
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+
+        <div id="mobile-nav-panel" class="mobile-nav-overlay" data-mobile-nav-overlay aria-hidden="true" hidden>
+          <div class="mobile-nav-dialog" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+            <div class="mobile-nav-links">
+              {links.map((link, index) => (
+                <a
+                  href={link.href}
+                  data-nav-section={link.section ?? undefined}
+                  class:list={[
+                    "mobile-nav-link",
+                    variant === "route" && "nav-link--route",
+                    variant === "route" && isRouteActive(link.href) && "is-active",
+                  ]}
+                  data-mobile-nav-link
+                  style={`--mobile-link-delay:${index * 80}ms;`}
+                  aria-current={variant === "route" && isRouteActive(link.href) ? "page" : undefined}
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </>
     )}
   </nav>
 </header>
+
+<script>
+  const initMobileNav = () => {
+    document.querySelectorAll(".site-nav-shell").forEach((shell) => {
+      if (!(shell instanceof HTMLElement)) return;
+      if (shell.dataset.mobileNavBound === "true") return;
+      shell.dataset.mobileNavBound = "true";
+
+      const toggle = shell.querySelector("[data-mobile-nav-toggle]");
+      const overlay = shell.querySelector("[data-mobile-nav-overlay]");
+      if (!(toggle instanceof HTMLButtonElement) || !(overlay instanceof HTMLElement)) return;
+
+      const closeLinks = overlay.querySelectorAll("[data-mobile-nav-link]");
+      const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      const showOverlay = () => {
+        overlay.hidden = false;
+        overlay.setAttribute("aria-hidden", "false");
+        window.requestAnimationFrame(() => {
+          overlay.classList.add("is-visible");
+        });
+      };
+
+      const hideOverlay = () => {
+        if (overlay.hidden) return;
+        overlay.classList.remove("is-visible");
+        overlay.setAttribute("aria-hidden", "true");
+
+        if (prefersReducedMotion()) {
+          overlay.hidden = true;
+          return;
+        }
+
+        const onTransitionEnd = (event) => {
+          if (event.target !== overlay) return;
+          overlay.hidden = true;
+          overlay.removeEventListener("transitionend", onTransitionEnd);
+        };
+
+        overlay.addEventListener("transitionend", onTransitionEnd, { once: true });
+      };
+
+      const setOpen = (isOpen) => {
+        shell.classList.toggle("mobile-nav-open", isOpen);
+        toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        document.body.classList.toggle("mobile-nav-lock", isOpen);
+        if (isOpen) {
+          showOverlay();
+        } else {
+          hideOverlay();
+        }
+      };
+
+      setOpen(false);
+
+      toggle.addEventListener("click", () => {
+        const isOpen = toggle.getAttribute("aria-expanded") === "true";
+        setOpen(!isOpen);
+      });
+
+      overlay.addEventListener("click", (event) => {
+        if (event.target === overlay) {
+          setOpen(false);
+        }
+      });
+
+      closeLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          setOpen(false);
+        });
+      });
+
+      window.addEventListener("resize", () => {
+        if (window.matchMedia("(min-width: 901px)").matches) {
+          setOpen(false);
+        }
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          setOpen(false);
+        }
+      });
+    });
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initMobileNav, { once: true });
+  } else {
+    initMobileNav();
+  }
+
+  document.addEventListener("astro:page-load", initMobileNav);
+</script>
