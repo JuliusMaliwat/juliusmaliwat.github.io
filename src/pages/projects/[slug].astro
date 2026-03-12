@@ -5,6 +5,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Nav from "../../components/Nav.astro";
 import Footer from "../../components/Footer.astro";
 import { TECH_ICON_MAP } from "../../consts";
+import whatDidItTakeData from "../../data/what-did-it-take.json";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -20,17 +21,192 @@ const { Content } = await project.render();
 const profileEntry = (await getCollection("profile"))[0];
 const profile = profileEntry?.data;
 const isWhyAmIHere = project.slug === "why-am-i-here-extension";
+const isWhatDidItTake = project.slug === "what-did-it-take-msc";
 const heroMedia = project.data.media?.[0];
 const galleryMedia = project.data.media?.slice(1) ?? [];
 const primaryLink = project.data.links?.[0];
 const githubLink =
   project.data.links?.find((item) => item.label.toLowerCase().includes("github")) ??
   project.data.links?.[1];
+
+const monthlyHours = isWhatDidItTake ? whatDidItTakeData.monthlyHours : [];
+const monthlyMax = monthlyHours.length > 0 ? Math.max(...monthlyHours.map((item) => item.hours), 1) : 1;
+const monthlyAxisMax = Math.max(20, Math.ceil(monthlyMax / 20) * 20);
+const monthlyTicks = [monthlyAxisMax, monthlyAxisMax * 0.75, monthlyAxisMax * 0.5, monthlyAxisMax * 0.25, 0].map(
+  (value) => Number(value.toFixed(0))
+);
+const monthlySeries = monthlyHours.map((item) => {
+  const [year, month] = item.key.split("-");
+  return {
+    ...item,
+    shortLabel: `${month}/${year.slice(2)}`,
+    percent: Number(((item.hours / monthlyAxisMax) * 100).toFixed(2)),
+  };
+});
+
+const summerWindows = [
+  { label: "Summer 2024", keys: ["2024-07", "2024-08"] },
+  { label: "Summer 2025", keys: ["2025-07", "2025-08"] },
+];
+
+const summerAnnotations = summerWindows
+  .map((window) => {
+    const indexes = window.keys.map((key) => monthlySeries.findIndex((item) => item.key === key)).filter((value) => value >= 0);
+    if (!indexes.length || !monthlySeries.length) return null;
+    const leftPercent = ((Math.min(...indexes) + Math.max(...indexes) + 1) / (2 * monthlySeries.length)) * 100;
+    return { label: window.label, leftPercent: Number(leftPercent.toFixed(2)) };
+  })
+  .filter(Boolean);
+
+const dashboardMetrics = isWhatDidItTake ? whatDidItTakeData.metrics : null;
+const dashboardMetricCards = dashboardMetrics
+  ? [
+      {
+        value: `${dashboardMetrics.hoursStudied.toLocaleString("en-US")}h`,
+        label: "Hours studied",
+        highlight: true,
+      },
+      {
+        value: dashboardMetrics.focusSessions.toLocaleString("en-US"),
+        label: "Focus sessions",
+        sub: `Avg session: ${dashboardMetrics.avgSessionMinutes} min`,
+      },
+      {
+        value: dashboardMetrics.daysWithStudy.toLocaleString("en-US"),
+        label: "Days with study",
+        sub: `Avg/day: ${Number(dashboardMetrics.avgStudyDayHours).toFixed(1)}h`,
+      },
+    ]
+  : [];
+
+const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const idealWeekHours = Array.from({ length: 16 }, (_, index) => index + 7);
+const slotData = isWhatDidItTake ? whatDidItTakeData.slotData : [];
+const MINUTES_THRESHOLD = 10;
+const filteredSlotValues = slotData.map((item) => (item.avgMinutesPerWeek >= MINUTES_THRESHOLD ? item.avgMinutesPerWeek : 0));
+const slotMap = new Map(
+  slotData.map((item) => [
+    `${item.dayofweek}-${item.hour}`,
+    item.avgMinutesPerWeek >= MINUTES_THRESHOLD ? item.avgMinutesPerWeek : 0,
+  ])
+);
+const slotMax = filteredSlotValues.length > 0 ? Math.max(...filteredSlotValues, 1) : 1;
+const slotLevel = (value) => {
+  if (!value) return 0;
+  const normalized = value / slotMax;
+  if (normalized <= 0.2) return 1;
+  if (normalized <= 0.4) return 2;
+  if (normalized <= 0.6) return 3;
+  if (normalized <= 0.8) return 4;
+  return 5;
+};
+
+const hourLabel = (hour) => {
+  return `${String(hour).padStart(2, "0")}:00`;
+};
+const isWorkHour = (hour) => hour >= 9 && hour <= 18;
+
+const dailyHours = isWhatDidItTake ? whatDidItTakeData.dailyHours : [];
+const dailyHoursMap = new Map(dailyHours.map((item) => [item.date, item.hours]));
+const toDateKey = (value) => value.toISOString().slice(0, 10);
+const toMondayIndex = (dayIndex) => (dayIndex + 6) % 7;
+const monthLabelFormatter = new Intl.DateTimeFormat("en-US", { month: "short", timeZone: "UTC" });
+const heatLevel = (hours) => {
+  if (!hours) return 0;
+  if (hours < 1) return 1;
+  if (hours < 2) return 2;
+  if (hours < 3.5) return 3;
+  if (hours < 5) return 4;
+  return 5;
+};
+
+const buildYearHeatmap = (year) => {
+  if (!isWhatDidItTake) return null;
+
+  const dayMs = 24 * 3_600_000;
+  const windowStart = new Date(`${whatDidItTakeData.window.start}T00:00:00.000Z`);
+  const windowEnd = new Date(`${whatDidItTakeData.window.end}T00:00:00.000Z`);
+  const yearStart = new Date(Date.UTC(year, 0, 1));
+  const yearEnd = new Date(Date.UTC(year, 11, 31));
+  const gridStart = new Date(yearStart);
+  gridStart.setUTCDate(gridStart.getUTCDate() - toMondayIndex(gridStart.getUTCDay()));
+
+  const gridEnd = new Date(yearEnd);
+  gridEnd.setUTCDate(gridEnd.getUTCDate() + (6 - toMondayIndex(gridEnd.getUTCDay())));
+
+  const weeks = [];
+  const monthLabels = Array.from({ length: 12 }, (_, monthIndex) => {
+    const monthStart = new Date(Date.UTC(year, monthIndex, 1));
+    const column = Math.floor((monthStart.getTime() - gridStart.getTime()) / (7 * dayMs)) + 1;
+    return {
+      label: monthLabelFormatter.format(monthStart),
+      column,
+    };
+  });
+
+  let cursor = new Date(gridStart);
+  while (cursor <= gridEnd) {
+    const week = [];
+    for (let dayIndex = 0; dayIndex < 7; dayIndex += 1) {
+      const date = toDateKey(cursor);
+      const inYear = cursor.getUTCFullYear() === year;
+      const inWindow = cursor >= windowStart && cursor <= windowEnd;
+      const hours = inYear && inWindow ? dailyHoursMap.get(date) ?? 0 : 0;
+
+      week.push({
+        date,
+        hours,
+        level: heatLevel(hours),
+        inYear,
+        inWindow,
+      });
+
+      cursor.setUTCDate(cursor.getUTCDate() + 1);
+    }
+    weeks.push(week);
+  }
+
+  return {
+    year,
+    weeks,
+    monthLabels,
+  };
+};
+
+const yearlyHeatmapsRaw = [2023, 2024, 2025].map((year) => buildYearHeatmap(year)).filter(Boolean);
+const sharedWeekCount = yearlyHeatmapsRaw.length > 0 ? Math.max(...yearlyHeatmapsRaw.map((panel) => panel.weeks.length)) : 0;
+const yearlyHeatmaps = yearlyHeatmapsRaw.map((panel) => {
+  if (panel.weeks.length === sharedWeekCount) return panel;
+  const paddedWeeks = [
+    ...panel.weeks,
+    ...Array.from({ length: sharedWeekCount - panel.weeks.length }, () =>
+      Array.from({ length: 7 }, () => ({
+        date: "",
+        hours: 0,
+        level: 0,
+        inYear: false,
+        inWindow: false,
+      }))
+    ),
+  ];
+
+  return {
+    ...panel,
+    weeks: paddedWeeks,
+  };
+});
 ---
 
 <BaseLayout title={project.data.title} description={project.data.summary}>
-  <main class={isWhyAmIHere ? "page project-page project-page--extension" : "page project-page"}>
+  <main
+    class:list={[
+      "page project-page",
+      isWhyAmIHere && "project-page--extension",
+      isWhatDidItTake && "project-page--what-did-it-take",
+    ]}
+  >
     <Nav variant="brand-only" />
+
     {isWhyAmIHere ? (
       <>
         <section class="extension-hero" data-reveal>
@@ -121,6 +297,287 @@ const githubLink =
           <h2>Details</h2>
           <Content />
         </section>
+      </>
+    ) : isWhatDidItTake ? (
+      <>
+        <section class="what-did-it-take-hero" data-reveal>
+          <div class="what-did-it-take-copy">
+            <div class="eyebrow">M.Sc in Data Science - Milano-Bicocca - 110L</div>
+            <h1 class="hero-title">What did it take?</h1>
+            <p class="lead">Completed my M.Sc while working full-time, tracked through exported Forest study sessions.</p>
+          </div>
+        </section>
+
+        <section
+          class="what-did-it-take-kpis"
+          data-reveal
+          data-stagger
+          data-stagger-base="80"
+          data-stagger-selector=".what-did-it-take-kpi-card"
+        >
+          {dashboardMetricCards.map((metric) => (
+            <article class:list={["what-did-it-take-kpi-card", metric.highlight && "is-highlight"]} data-reveal>
+              <strong>{metric.value}</strong>
+              <span>{metric.label}</span>
+              {metric.sub && <small>{metric.sub}</small>}
+            </article>
+          ))}
+        </section>
+
+        <section class="section-block what-did-it-take-section" data-reveal>
+          <div class="what-did-it-take-section-header">
+            <h2>Hours per month</h2>
+          </div>
+          <div class="monthly-chart-shell" data-monthly-chart>
+            <div class="monthly-y-axis" aria-hidden="true">
+              {monthlyTicks.map((tick) => (
+                <span>{tick}h</span>
+              ))}
+            </div>
+
+            <div class="monthly-plot-area">
+              <div class="what-did-it-take-monthly-chart" aria-label="Monthly study hours">
+                {monthlySeries.map((item) => (
+                  <button
+                    type="button"
+                    class="monthly-bar-item"
+                    data-month-label={item.label}
+                    data-hours={item.hours}
+                  >
+                    <div class="monthly-bar-track">
+                      <span class="monthly-bar-fill" style={`--bar-height:${Math.max(item.percent, 2)}%;`}></span>
+                    </div>
+                    <span class="monthly-bar-label">{item.shortLabel}</span>
+                  </button>
+                ))}
+              </div>
+
+              {summerAnnotations.map((annotation) => (
+                <div class="monthly-summer-note" style={`left:${annotation.leftPercent}%`} aria-hidden="true">
+                  <span>{annotation.label}</span>
+                  <i></i>
+                </div>
+              ))}
+
+              <div class="monthly-tooltip">
+                <strong></strong>
+                <span></span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-block what-did-it-take-section" data-reveal>
+          <div class="what-did-it-take-section-header">
+            <h2>Ideal week</h2>
+            <span class="ideal-week-legend">
+              <i aria-hidden="true"></i>
+              Mon-Fri 09:00-18:00 work
+            </span>
+          </div>
+          <div class="ideal-week-wrap" data-tooltip-scope>
+            <div class="ideal-week-heatmap" aria-label="Ideal week heatmap">
+              <div class="ideal-week-corner" aria-hidden="true"></div>
+              {weekDays.map((day) => (
+                <div class:list={["ideal-week-col-head", (day === "Sat" || day === "Sun") && "is-weekend"]}>{day}</div>
+              ))}
+
+              {idealWeekHours.map((hour) => (
+                <>
+                  <div class="ideal-week-row-label">{hourLabel(hour)}</div>
+                  {weekDays.map((day, dayIndex) => {
+                    const key = `${dayIndex}-${hour}`;
+                    const blockedWorkHours = dayIndex < 5 && isWorkHour(hour);
+                    const value = blockedWorkHours ? 0 : slotMap.get(key) ?? 0;
+                    const level = blockedWorkHours ? 0 : slotLevel(value);
+                    return (
+                      <div
+                        class:list={[
+                          "ideal-week-cell",
+                          `is-level-${level}`,
+                          blockedWorkHours && "is-work-block",
+                          dayIndex === 0 && hour === 9 && "is-work-window-anchor",
+                        ]}
+                        data-tooltip-title={`${day} ${hourLabel(hour)}`}
+                        data-tooltip-value={blockedWorkHours ? "Full-time work block" : `${value} min/week`}
+                      ></div>
+                    );
+                  })}
+                </>
+              ))}
+            </div>
+            <div class="heatmap-tooltip" data-heatmap-tooltip>
+              <strong></strong>
+              <span></span>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-block what-did-it-take-section" data-reveal>
+          <div class="what-did-it-take-section-header">
+            <h2>Daily heatmap</h2>
+          </div>
+          <div class="daily-heatmap-legend" aria-hidden="true">
+            <span>Less</span>
+            <i class="is-level-0"></i>
+            <i class="is-level-1"></i>
+            <i class="is-level-2"></i>
+            <i class="is-level-3"></i>
+            <i class="is-level-4"></i>
+            <i class="is-level-5"></i>
+            <span>More</span>
+          </div>
+          <div class="yearly-heatmaps">
+            {yearlyHeatmaps.map((panel) => (
+              <section class="year-heatmap-panel">
+                <h3>{panel.year}</h3>
+                <div class="year-heatmap-wrap" data-tooltip-scope>
+                  <div class="year-heatmap-layout">
+                    <div class="year-heatmap-y-axis" aria-hidden="true">
+                      {weekDays.map((day) => (
+                        <span>{day}</span>
+                      ))}
+                    </div>
+
+                    <div class="year-heatmap-main">
+                      <div class="year-heatmap-month-axis" style={`--week-count:${panel.weeks.length};`}>
+                        {panel.monthLabels.map((month) => (
+                          <span style={`grid-column:${month.column};`}>{month.label}</span>
+                        ))}
+                      </div>
+
+                      <div class="year-heatmap-grid" style={`--week-count:${panel.weeks.length};`}>
+                        {panel.weeks.map((week) => (
+                          <div class="year-heatmap-week">
+                            {week.map((cell) => (
+                              <span
+                                class:list={[
+                                  "year-heatmap-cell",
+                                  cell.inYear && cell.inWindow && `heat-${cell.level}`,
+                                  cell.inYear && !cell.inWindow && "is-empty",
+                                  !cell.inYear && "is-outside-year",
+                                ]}
+                                data-tooltip-title={cell.date}
+                                data-tooltip-value={`${cell.hours}h studied`}
+                              ></span>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="heatmap-tooltip" data-heatmap-tooltip>
+                    <strong></strong>
+                    <span></span>
+                  </div>
+                </div>
+              </section>
+            ))}
+          </div>
+        </section>
+
+        <script is:inline>
+          (() => {
+            const initMonthlyTooltip = () => {
+              document.querySelectorAll("[data-monthly-chart]").forEach((chart) => {
+                if (chart.dataset.tooltipReady === "true") return;
+                chart.dataset.tooltipReady = "true";
+
+                const tooltip = chart.querySelector(".monthly-tooltip");
+                const tooltipTitle = tooltip?.querySelector("strong");
+                const tooltipValue = tooltip?.querySelector("span");
+                const bars = Array.from(chart.querySelectorAll(".monthly-bar-item"));
+
+                if (!tooltip || !tooltipTitle || !tooltipValue || bars.length === 0) return;
+
+                const hideTooltip = () => {
+                  tooltip.classList.remove("is-visible");
+                  bars.forEach((bar) => bar.classList.remove("is-active"));
+                };
+
+                const showTooltip = (bar) => {
+                  bars.forEach((node) => node.classList.toggle("is-active", node === bar));
+                  tooltipTitle.textContent = bar.getAttribute("data-month-label") || "";
+                  tooltipValue.textContent = `${bar.getAttribute("data-hours") || "0"}h studied`;
+
+                  const chartRect = chart.getBoundingClientRect();
+                  const barRect = bar.getBoundingClientRect();
+                  const left = barRect.left - chartRect.left + barRect.width / 2;
+                  const clamped = Math.max(56, Math.min(chartRect.width - 56, left));
+                  tooltip.style.left = `${clamped}px`;
+                  tooltip.classList.add("is-visible");
+                };
+
+                bars.forEach((bar) => {
+                  bar.addEventListener("mouseenter", () => showTooltip(bar));
+                  bar.addEventListener("mousemove", () => showTooltip(bar));
+                  bar.addEventListener("focus", () => showTooltip(bar));
+                  bar.addEventListener("mouseleave", hideTooltip);
+                  bar.addEventListener("blur", hideTooltip);
+                });
+
+                chart.addEventListener("mouseleave", hideTooltip);
+              });
+            };
+
+            const initHeatmapTooltips = () => {
+              document.querySelectorAll("[data-tooltip-scope]").forEach((scope) => {
+                if (scope.dataset.tooltipReady === "true") return;
+                scope.dataset.tooltipReady = "true";
+
+                const tooltip = scope.querySelector("[data-heatmap-tooltip]");
+                const tooltipTitle = tooltip?.querySelector("strong");
+                const tooltipValue = tooltip?.querySelector("span");
+                const cells = Array.from(scope.querySelectorAll("[data-tooltip-title]"));
+
+                if (!tooltip || !tooltipTitle || !tooltipValue || cells.length === 0) return;
+
+                const hideTooltip = () => {
+                  tooltip.classList.remove("is-visible");
+                  cells.forEach((cell) => cell.classList.remove("is-hovered"));
+                };
+
+                const showTooltip = (cell) => {
+                  cells.forEach((node) => node.classList.toggle("is-hovered", node === cell));
+                  tooltipTitle.textContent = cell.getAttribute("data-tooltip-title") || "";
+                  tooltipValue.textContent = cell.getAttribute("data-tooltip-value") || "";
+
+                  const scopeRect = scope.getBoundingClientRect();
+                  const cellRect = cell.getBoundingClientRect();
+                  const left = cellRect.left - scopeRect.left + cellRect.width / 2;
+                  const clamped = Math.max(68, Math.min(scopeRect.width - 68, left));
+
+                  tooltip.style.left = `${clamped}px`;
+                  tooltip.style.top = `${Math.max(8, cellRect.top - scopeRect.top - 38)}px`;
+                  tooltip.classList.add("is-visible");
+                };
+
+                cells.forEach((cell) => {
+                  cell.addEventListener("mouseenter", () => showTooltip(cell));
+                  cell.addEventListener("mousemove", () => showTooltip(cell));
+                  cell.addEventListener("focus", () => showTooltip(cell));
+                  cell.addEventListener("mouseleave", hideTooltip);
+                  cell.addEventListener("blur", hideTooltip);
+                });
+
+                scope.addEventListener("mouseleave", hideTooltip);
+              });
+            };
+
+            const init = () => {
+              initMonthlyTooltip();
+              initHeatmapTooltips();
+            };
+
+            if (document.readyState === "loading") {
+              document.addEventListener("DOMContentLoaded", init, { once: true });
+            } else {
+              init();
+            }
+
+            document.addEventListener("astro:page-load", init);
+          })();
+        </script>
       </>
     ) : (
       <>

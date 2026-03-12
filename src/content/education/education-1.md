@@ -8,6 +8,8 @@ startDate: "10/2023"
 endDate: "10/2025"
 thesis: "Design and Evaluation of Multi-Camera Multi-Object Tracking Pipelines in Calibrated Environments"
 thesisUrl: "https://github.com/JuliusMaliwat/msc-thesis"
+workStudyNote: "Completed while working full-time."
+dashboardUrl: "/projects/what-did-it-take-msc/"
 grade: "110/110 with honors"
 courses:
   - "Digital Signal and Image Management"

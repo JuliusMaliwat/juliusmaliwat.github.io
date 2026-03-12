@@ -1,4 +1,4 @@
----
+﻿---
 // Home page: one-page portfolio with anchored sections.
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
@@ -104,13 +104,13 @@ const groupedSkills = skillCategoryOrder
                         )}
                         <span>
                           {role.data.company}
-                          {role.data.location ? ` · ${role.data.location}` : ""}
+                          {role.data.location ? ` - ${role.data.location}` : ""}
                         </span>
                       </a>
                     ) : (
                       <div class="muted">
                         {role.data.company}
-                        {role.data.location ? ` · ${role.data.location}` : ""}
+                        {role.data.location ? ` - ${role.data.location}` : ""}
                       </div>
                     )}
                   </div>
@@ -173,9 +173,19 @@ const groupedSkills = skillCategoryOrder
                       )}
                       <span>
                         {item.data.institution}
-                        {item.data.location ? ` · ${item.data.location}` : ""}
+                        {item.data.location ? ` - ${item.data.location}` : ""}
                       </span>
                     </div>
+                    {item.data.workStudyNote && <p class="education-work-note muted">{item.data.workStudyNote}</p>}
+                    {item.data.dashboardUrl && (
+                      <a
+                        class="inline-link education-dashboard-link"
+                        href={item.data.dashboardUrl}
+                        onclick="event.stopPropagation();"
+                      >
+                        See what it took
+                      </a>
+                    )}
                   </div>
                 </summary>
                 <div class="accordion-body">
@@ -296,3 +306,4 @@ const groupedSkills = skillCategoryOrder
     <script defer src="/scripts/typewriter.js"></script>
   </main>
 </BaseLayout>
+

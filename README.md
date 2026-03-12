@@ -16,6 +16,8 @@ Personal website built with Astro and deployed on GitHub Pages.
 - Certifications embedded in Skills
 - Projects section on Home
 - Dedicated project detail pages with brand-only header (`Julius.` back to Home)
+- Dedicated MSc dashboard project: `/projects/what-did-it-take-msc/`
+  - Includes custom-tooltip monthly chart, `Ideal week` heatmap (07:00-22:00), and yearly daily heatmaps (2023/2024/2025)
 - Library (minimal placeholder)
 - Footer contact links + `Download CV`
 - Dark-only theme runtime and staged reveal motion system
@@ -50,6 +52,20 @@ Content lives in `src/content/`:
 
 `Projects` supports detail routes per project slug, for example:
 `/projects/why-am-i-here-extension/`
+
+The MSc dashboard route:
+`/projects/what-did-it-take-msc/`
+
+It is backed by build-time data generated from Forest CSV with:
+- `Tag=Studio`
+- `Is Success=true`
+- date range `Sep 2023` to `Oct 2025`
+
+Regenerate dashboard data locally before deploy when CSV changes:
+
+```bash
+npm run build:msc-dashboard-data
+```
 
 Social links used in the footer are defined in `src/content/profile/index.md`.
 

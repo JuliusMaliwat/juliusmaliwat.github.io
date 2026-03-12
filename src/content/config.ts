@@ -61,6 +61,8 @@ const education = defineCollection({
     highlights: z.array(z.string()).optional(),
     thesis: z.string().optional(),
     thesisUrl: z.string().url().optional(),
+    workStudyNote: z.string().optional(),
+    dashboardUrl: z.string().optional(),
     projects: z.array(z.string()).optional(),
     courses: z.array(z.string()).optional(),
     universityProjects: z
