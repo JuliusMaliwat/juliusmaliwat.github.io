@@ -33,7 +33,21 @@ const experienceSorted = [...experience].sort(sortByStartDesc);
 const educationSorted = [...education].sort(sortByStartDesc);
 const certificationsSorted = [...certifications].sort((a, b) => Date.parse(b.data.date) - Date.parse(a.data.date));
 
-const visibleProjects = projects.filter((project) => !project.data.draft);
+const projectPriority = new Map([
+  ["why-am-i-here-extension", 0],
+  ["what-did-it-take-msc", 1],
+]);
+
+const visibleProjects = projects
+  .filter((project) => !project.data.draft)
+  .sort((left, right) => {
+    const leftPriority = projectPriority.get(left.slug) ?? Number.MAX_SAFE_INTEGER;
+    const rightPriority = projectPriority.get(right.slug) ?? Number.MAX_SAFE_INTEGER;
+    if (leftPriority !== rightPriority) {
+      return leftPriority - rightPriority;
+    }
+    return left.data.title.localeCompare(right.data.title);
+  });
 
 const skillCategoryOrder = [
   "Programming & Development",

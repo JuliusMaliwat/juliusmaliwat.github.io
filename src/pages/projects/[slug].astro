@@ -28,6 +28,11 @@ const primaryLink = project.data.links?.[0];
 const githubLink =
   project.data.links?.find((item) => item.label.toLowerCase().includes("github")) ??
   project.data.links?.[1];
+const forestLink =
+  project.data.links?.find((item) => item.label.toLowerCase().includes("forest")) ?? {
+    label: "Forest app",
+    url: "https://www.forestapp.cc/",
+  };
 
 const monthlyHours = isWhatDidItTake ? whatDidItTakeData.monthlyHours : [];
 const monthlyMax = monthlyHours.length > 0 ? Math.max(...monthlyHours.map((item) => item.hours), 1) : 1;
@@ -305,6 +310,12 @@ const yearlyHeatmaps = yearlyHeatmapsRaw.map((panel) => {
             <div class="eyebrow">M.Sc in Data Science - Milano-Bicocca - 110L</div>
             <h1 class="hero-title">What did it take?</h1>
             <p class="lead">Completed my M.Sc while working full-time, tracked through exported Forest study sessions.</p>
+            {forestLink?.url && (
+              <a class="forest-source-badge" href={forestLink.url} target="_blank" rel="noreferrer">
+                <img src="/logos/forest.png" alt="Forest logo" loading="lazy" />
+                <span>Data source: Forest</span>
+              </a>
+            )}
           </div>
         </section>
 

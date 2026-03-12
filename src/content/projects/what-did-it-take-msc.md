@@ -3,7 +3,7 @@ title: "What did it take"
 type: "personal"
 status: "shipped"
 draft: false
-summary: "A Studio-only data story of the MSc journey completed while working full-time, built from Forest focus-session data."
+summary: "I completed my M.Sc while working full-time, then exported my Forest study data to build this dashboard."
 problem: "Balancing a full-time data engineering role with graduate studies is hard to communicate with plain timeline dates alone."
 solution: "This dashboard turns two years of focus sessions into concrete evidence: total effort, weekly pace, seasonal intensity, and study/work mix."
 highlights:
@@ -18,6 +18,8 @@ year: "2026"
 links:
   - label: "M.Sc program"
     url: "https://www.unimib.it/graduate/data-science"
+  - label: "Forest app"
+    url: "https://www.forestapp.cc/"
 media:
   - alt: "What did it take dashboard cover"
     src: "/projects/what-did-it-take/cover-scroll.gif"

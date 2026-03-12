@@ -1295,6 +1295,37 @@ footer[id] {
   max-width: 58ch;
 }
 
+.forest-source-badge {
+  margin-top: 10px;
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--line) 74%, transparent);
+  background: color-mix(in srgb, var(--bg-elev) 72%, transparent);
+  color: color-mix(in srgb, var(--muted) 86%, var(--text));
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  transition: border-color var(--motion-fast) var(--ease-standard), color var(--motion-fast) var(--ease-standard);
+}
+
+.forest-source-badge img {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  display: block;
+}
+
+.forest-source-badge:hover,
+.forest-source-badge:focus-visible {
+  color: var(--text);
+  border-color: color-mix(in srgb, var(--accent) 68%, var(--line));
+}
+
 .what-did-it-take-kpis {
   margin-top: 18px;
   display: grid;
