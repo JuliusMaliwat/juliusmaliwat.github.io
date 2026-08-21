@@ -1,0 +1,37 @@
+---
+// Experience section: flat list of roles, no accordion, no logos.
+const roles = [
+  {
+    company: "Quantyca",
+    text: "migrating autostrade per l'italia's data platform from aws to databricks, helping define the new setup.",
+    tag: "databricks · aws · terraform · python",
+  },
+  {
+    company: "Softlab",
+    text: "built etl pipelines for fastweb on aws for reporting and dashboards.",
+    tag: "aws · spark · python · sql",
+  },
+  {
+    company: "KPMG",
+    text: "built internal tools for audit teams.",
+    tag: "python · javascript · react",
+  },
+];
+---
+
+<section id="experience" class="section-block section-screen">
+  <h2>Experience</h2>
+  <div class="cv-list">
+    {roles.map((role) => (
+      <div class="cv-row">
+        <p>{role.text}</p>
+        <p class="cv-row-tag">{role.tag}</p>
+      </div>
+    ))}
+
+    <div class="cv-row cv-certifications">
+      <p class="cv-row-title">Certifications</p>
+      <p>databricks certified data engineer associate</p>
+    </div>
+  </div>
+</section>

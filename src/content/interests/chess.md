@@ -1,4 +1,0 @@
----
-label: "Chess"
-icon: "♟️"
----

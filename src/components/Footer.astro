@@ -9,26 +9,16 @@ const findLink = (label) =>
 const mailto = email ? `mailto:${email}` : "mailto:juliusmaliwat.work@gmail.com";
 const githubUrl = findLink("GitHub");
 const linkedinUrl = findLink("LinkedIn");
-const xUrl = findLink("X");
 ---
 
-<footer
-  id="contact"
-  class="site-footer"
-  aria-label="Contact links"
-  data-reveal
-  data-stagger
-  data-stagger-base="150"
-  data-stagger-selector=".site-footer-inner > *"
->
+<footer id="contact" class="site-footer" aria-label="Contact links">
   <div class="site-footer-inner">
     <div class="site-footer-signature">
-      <p class="site-footer-title">Get in touch</p>
-      <p class="muted">Milan, Italy</p>
+      <p class="site-footer-title">connect</p>
+      <p class="muted">milan, italy</p>
     </div>
 
     <div class="site-footer-links">
-      <a class="button ghost small footer-cv" href="/cv.pdf" download>Download CV</a>
       <a class="footer-link" href={mailto}>Email</a>
       {githubUrl && (
         <a class="footer-link" href={githubUrl} target="_blank" rel="noreferrer">
@@ -40,11 +30,7 @@ const xUrl = findLink("X");
           LinkedIn
         </a>
       )}
-      {xUrl && (
-        <a class="footer-link" href={xUrl} target="_blank" rel="noreferrer">
-          X
-        </a>
-      )}
+      <a class="footer-link" href="/cv.pdf" download>cv</a>
     </div>
   </div>
 </footer>

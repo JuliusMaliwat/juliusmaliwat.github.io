@@ -1,4 +1,0 @@
----
-label: "Anime"
-icon: "🍥"
----

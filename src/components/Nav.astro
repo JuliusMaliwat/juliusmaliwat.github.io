@@ -1,96 +1,56 @@
 ---
-// Top navigation with explicit variants:
-// - home: section anchors
-// - route: route links
-// - brand-only: only site brand link
-const currentPath = Astro.url.pathname;
-const { variant: variantProp } = Astro.props;
-const isHomePath = currentPath === "/";
-const variant = variantProp ?? (isHomePath ? "home" : "route");
-
-const homeLinks = [
+// Top navigation: brand link back to home, plus anchors to the home sections.
+const links = [
   { label: "Experience", href: "#experience", section: "experience" },
+  { label: "Education", href: "#education", section: "education" },
   { label: "Skills", href: "#skills", section: "skills" },
-  { label: "Projects", href: "#projects", section: "projects" },
 ];
-
-const routeLinks = [
-  { label: "Home", href: "/" },
-  { label: "Projects", href: "/#projects" },
-];
-
-const links = variant === "home" ? homeLinks : variant === "route" ? routeLinks : [];
-const showLinks = links.length > 0;
-
-const isRouteActive = (href) => {
-  if (!href.startsWith("/")) return false;
-  if (href === "/") return currentPath === "/";
-  return currentPath.startsWith(href);
-};
 ---
 
-<header class:list={["site-nav-shell", variant === "brand-only" && "site-nav-shell--brand-only"]}>
-  <nav class:list={["site-nav", variant === "brand-only" && "site-nav--brand-only"]} aria-label="Main">
+<header class="site-nav-shell">
+  <nav class="site-nav" aria-label="Main">
     <a href="/" class="site-brand" aria-label="Homepage">
       <span class="brand-text">Julius.</span>
     </a>
 
-    {showLinks && (
-      <>
-        <button
-          class="mobile-menu-toggle"
-          type="button"
-          aria-label="Open navigation menu"
-          aria-expanded="false"
-          aria-controls="mobile-nav-panel"
-          data-mobile-nav-toggle
-        >
-          <span class="mobile-menu-line"></span>
-          <span class="mobile-menu-line"></span>
-          <span class="mobile-menu-line"></span>
-        </button>
+    <button
+      class="mobile-menu-toggle"
+      type="button"
+      aria-label="Open navigation menu"
+      aria-expanded="false"
+      aria-controls="mobile-nav-panel"
+      data-mobile-nav-toggle
+    >
+      <span class="mobile-menu-line"></span>
+      <span class="mobile-menu-line"></span>
+      <span class="mobile-menu-line"></span>
+    </button>
 
-        <div class="site-nav-links">
-          {links.map((link) => (
+    <div class="site-nav-links">
+      {links.map((link) => (
+        <a href={link.href} data-nav-section={link.section} class="nav-link">
+          {link.label}
+        </a>
+      ))}
+    </div>
+
+    <div id="mobile-nav-panel" class="mobile-nav-overlay" data-mobile-nav-overlay aria-hidden="true" hidden>
+      <div class="mobile-nav-dialog" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+        <div class="mobile-nav-links">
+          {links.map((link, index) => (
             <a
               href={link.href}
-              data-nav-section={link.section ?? undefined}
-              class:list={[
-                "nav-link",
-                variant === "route" && "nav-link--route",
-                variant === "route" && isRouteActive(link.href) && "is-active",
-              ]}
-              aria-current={variant === "route" && isRouteActive(link.href) ? "page" : undefined}
+              data-nav-section={link.section}
+              class="mobile-nav-link"
+              data-mobile-nav-link
+              style={`--mobile-link-delay:${index * 80}ms;`}
             >
               {link.label}
             </a>
           ))}
         </div>
-
-        <div id="mobile-nav-panel" class="mobile-nav-overlay" data-mobile-nav-overlay aria-hidden="true" hidden>
-          <div class="mobile-nav-dialog" role="dialog" aria-modal="true" aria-label="Mobile navigation">
-            <div class="mobile-nav-links">
-              {links.map((link, index) => (
-                <a
-                  href={link.href}
-                  data-nav-section={link.section ?? undefined}
-                  class:list={[
-                    "mobile-nav-link",
-                    variant === "route" && "nav-link--route",
-                    variant === "route" && isRouteActive(link.href) && "is-active",
-                  ]}
-                  data-mobile-nav-link
-                  style={`--mobile-link-delay:${index * 80}ms;`}
-                  aria-current={variant === "route" && isRouteActive(link.href) ? "page" : undefined}
-                >
-                  {link.label}
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
-      </>
-    )}
+      </div>
+    </div>
   </nav>
 </header>
 

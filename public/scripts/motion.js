@@ -1,6 +1,5 @@
 (() => {
   const root = document.documentElement;
-  let revealObserver;
   let resizeBound = false;
   let sectionNavCleanup = null;
 
@@ -70,64 +69,6 @@
       { passive: true }
     );
     window.addEventListener("orientationchange", applyAnchorOffset, { passive: true });
-  };
-
-  const revealNow = (element) => {
-    element.classList.add("is-visible");
-  };
-
-  const applyStagger = (container) => {
-    if (!(container instanceof HTMLElement)) return;
-    if (!container.hasAttribute("data-stagger")) return;
-    if (container.dataset.staggerReady === "true") return;
-
-    const baseDelay = Number(container.dataset.staggerBase ?? "120");
-    const selector = container.dataset.staggerSelector ?? ":scope > *";
-    const items = Array.from(container.querySelectorAll(selector));
-
-    items.forEach((item, index) => {
-      if (!(item instanceof HTMLElement)) return;
-      if (!item.hasAttribute("data-reveal")) item.setAttribute("data-reveal", "");
-      if (!item.dataset.revealDelay) {
-        item.dataset.revealDelay = String(baseDelay * index);
-      }
-    });
-
-    container.dataset.staggerReady = "true";
-  };
-
-  const observeReveal = (element) => {
-    if (!(element instanceof HTMLElement)) return;
-    if (element.dataset.revealBound === "true") return;
-    element.dataset.revealBound = "true";
-
-    const delay = Number(element.dataset.revealDelay ?? "0");
-    element.style.setProperty("--reveal-delay", `${delay}ms`);
-
-    if (isReduced()) {
-      revealNow(element);
-      return;
-    }
-
-    if (!revealObserver) {
-      revealObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-            const target = entry.target;
-            if (!(target instanceof HTMLElement)) return;
-            revealNow(target);
-            revealObserver?.unobserve(target);
-          });
-        },
-        {
-          rootMargin: "0px 0px -8% 0px",
-          threshold: 0.2,
-        }
-      );
-    }
-
-    revealObserver.observe(element);
   };
 
   const initSectionNav = () => {
@@ -278,8 +219,6 @@
   const initMotion = () => {
     applyAnchorOffset();
     bindResize();
-    document.querySelectorAll("[data-stagger]").forEach(applyStagger);
-    document.querySelectorAll("[data-reveal]").forEach(observeReveal);
     initSectionNav();
     initGlobalHashAnchors();
 

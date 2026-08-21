@@ -1,0 +1,41 @@
+---
+// Skills section: typography-first, grouped by category, no icons.
+import { getCollection } from "astro:content";
+
+const skills = await getCollection("skills");
+
+const skillCategoryOrder = [
+  "Programming & Development",
+  "Data Science, AI & Analytics",
+  "Data Engineering & Cloud",
+];
+
+const groupedSkills = skillCategoryOrder
+  .map((category) => ({
+    category,
+    items: skills
+      .filter((entry) => entry.data.category === category)
+      .sort(
+        (a, b) =>
+          (a.data.order ?? Number.MAX_SAFE_INTEGER) -
+            (b.data.order ?? Number.MAX_SAFE_INTEGER) || a.data.name.localeCompare(b.data.name)
+      ),
+  }))
+  .filter((group) => group.items.length > 0);
+---
+
+<section id="skills" class="section-block section-screen">
+  <h2>Skills</h2>
+  <div class="skills-groups">
+    {groupedSkills.map((group) => (
+      <div class="skills-group">
+        <div class="eyebrow">{group.category}</div>
+        <div class="skills-grid skills-grid--text">
+          {group.items.map((skill) => (
+            <span class="skill-text">{skill.data.name}</span>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

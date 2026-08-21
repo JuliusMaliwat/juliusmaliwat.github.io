@@ -1,4 +1,0 @@
----
-label: "Basketball"
-icon: "🏀"
----

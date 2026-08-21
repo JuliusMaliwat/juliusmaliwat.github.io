@@ -9,8 +9,6 @@ links:
     url: "https://github.com/JuliusMaliwat"
   - label: "LinkedIn"
     url: "https://www.linkedin.com/in/julius-maliwat-679372223/"
-  - label: "X"
-    url: "https://x.com/your-handle"
 bioShort: "MSc Data Science @ University of Bicocca"
 ---
 
