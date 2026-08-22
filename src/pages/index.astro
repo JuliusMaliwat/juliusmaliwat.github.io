@@ -1,12 +1,9 @@
 ---
-// Home page: one-page portfolio with anchored sections.
+// Home page: hero only. Experience/Education/Skills live on their own pages.
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
-import Experience from "../components/Experience.astro";
-import Education from "../components/Education.astro";
-import Skills from "../components/Skills.astro";
 
 const profileEntry = (await getCollection("profile"))[0];
 const profile = profileEntry?.data;
@@ -16,23 +13,11 @@ const profile = profileEntry?.data;
   <main class="page page-home">
     <Nav />
 
-    <section class="home-hero home-hero--center">
-      <p class="hero-pill">Data Engineering - AI</p>
-      <h1 class="home-greeting">Hi, I'm Julius.</h1>
-      <div class="cta-group cta-group--center">
-        <a class="button" href="#experience">View my work</a>
-        <a class="button ghost" href="#contact">Get in touch</a>
-      </div>
-      <a class="scroll-cue" href="#experience">
-        <span>Scroll to explore</span>
-        <span aria-hidden="true">↓</span>
-      </a>
+    <section class="home-hero">
+      <p class="home-greeting">{profile?.homeGreeting}</p>
+      <p class="home-role">{profile?.headline}</p>
     </section>
 
-    <Experience />
-    <Education />
-    <Skills />
-
-    <Footer email={profile?.email} location={profile?.location} links={profile?.links} />
+    <Footer email={profile?.email} links={profile?.links} />
   </main>
 </BaseLayout>

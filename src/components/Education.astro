@@ -1,6 +1,8 @@
 ---
 // Education section: flat list of degrees, no accordion, no institution logo.
+// Row layout matches Experience: institution/title on the left, dates aligned right on the same line.
 const msc = {
+  dates: "oct 2023 - oct 2025",
   text: "m.sc in data science, completed while working full-time.",
   thesisLabel: "multi-camera multi-object tracking",
   thesisUrl: "https://github.com/JuliusMaliwat/msc-thesis",
@@ -8,28 +10,65 @@ const msc = {
 };
 
 const bsc = {
+  dates: "oct 2020 - jul 2023",
   text: "b.sc in statistics.",
   thesisLabel: "ml for meta-analysis in clinical settings",
   thesisUrl: "https://github.com/JuliusMaliwat/bachelor-thesis",
 };
 ---
 
-<section id="education" class="section-block section-screen">
-  <h2>Education</h2>
+<section id="education" class="section-block">
   <div class="cv-list">
-    <div class="cv-row">
-      <p><strong>Bicocca</strong> — {msc.text}</p>
+    <div class="edu-row">
+      <div class="edu-head">
+        <p class="edu-title"><strong>Bicocca</strong> — {msc.text}</p>
+        <p class="edu-dates">{msc.dates}</p>
+      </div>
       <p class="cv-row-tag">
         110/110 with honors · thesis: <a class="inline-link" href={msc.thesisUrl} target="_blank" rel="noreferrer">{msc.thesisLabel}</a> ·{" "}
         <a class="inline-link" href={msc.projectsUrl} target="_blank" rel="noreferrer">projects</a>
       </p>
     </div>
 
-    <div class="cv-row">
-      <p><strong>Bicocca</strong> — {bsc.text}</p>
+    <div class="edu-row">
+      <div class="edu-head">
+        <p class="edu-title"><strong>Bicocca</strong> — {bsc.text}</p>
+        <p class="edu-dates">{bsc.dates}</p>
+      </div>
       <p class="cv-row-tag">
         110/110 with honors · thesis: <a class="inline-link" href={bsc.thesisUrl} target="_blank" rel="noreferrer">{bsc.thesisLabel}</a>
       </p>
     </div>
   </div>
 </section>
+
+<style>
+  .cv-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .edu-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+
+  .edu-title {
+    flex: 1;
+  }
+
+  .edu-dates {
+    font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .edu-row .cv-row-tag {
+    margin-top: 6px;
+  }
+</style>

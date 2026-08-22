@@ -1,37 +1,94 @@
 ---
 // Experience section: flat list of roles, no accordion, no logos.
+// Row layout: company/role on the left, dates aligned right on the same line.
 const roles = [
   {
     company: "Quantyca",
+    role: "data engineer",
+    dates: "jun 2025 - present",
     text: "migrating autostrade per l'italia's data platform from aws to databricks, helping define the new setup.",
     tag: "databricks · aws · terraform · python",
   },
   {
     company: "Softlab",
+    role: "data engineer",
+    dates: "jun 2024 - jun 2025",
     text: "built etl pipelines for fastweb on aws for reporting and dashboards.",
     tag: "aws · spark · python · sql",
   },
   {
     company: "KPMG",
+    role: "software engineer",
+    dates: "jul 2023 - jun 2024",
     text: "built internal tools for audit teams.",
     tag: "python · javascript · react",
   },
 ];
 ---
 
-<section id="experience" class="section-block section-screen">
-  <h2>Experience</h2>
+<section id="experience" class="section-block">
   <div class="cv-list">
     {roles.map((role) => (
-      <div class="cv-row">
-        <p>{role.text}</p>
-        <p class="cv-row-tag">{role.tag}</p>
+      <div class="cvb-row">
+        <div class="cvb-head">
+          <p class="cvb-company">{role.company} <span class="cvb-role">— {role.role}</span></p>
+          <p class="cvb-dates">{role.dates}</p>
+        </div>
+        <p class="cvb-text">{role.text}</p>
+        <p class="cvb-tag">{role.tag}</p>
       </div>
     ))}
-
-    <div class="cv-row cv-certifications">
-      <p class="cv-row-title">Certifications</p>
-      <p>databricks certified data engineer associate</p>
+    <div class="cvb-row">
+      <div class="cvb-head">
+        <p class="cvb-company">Certifications</p>
+        <p class="cvb-dates">jan 2026</p>
+      </div>
+      <p class="cvb-text">databricks certified data engineer associate</p>
     </div>
   </div>
 </section>
+
+<style>
+  .cv-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .cvb-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+
+  .cvb-company {
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+
+  .cvb-role {
+    font-weight: 400;
+    color: var(--muted);
+  }
+
+  .cvb-dates {
+    font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .cvb-text {
+    margin-top: 8px;
+    color: var(--text);
+  }
+
+  .cvb-tag {
+    margin-top: 8px;
+    font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+</style>

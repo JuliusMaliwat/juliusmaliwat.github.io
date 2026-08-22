@@ -1,10 +1,12 @@
 ---
-// Top navigation: brand link back to home, plus anchors to the home sections.
+// Top navigation: brand link back to home, plus links to each dedicated page.
 const links = [
-  { label: "Experience", href: "#experience", section: "experience" },
-  { label: "Education", href: "#education", section: "education" },
-  { label: "Skills", href: "#skills", section: "skills" },
+  { label: "Experience", href: "/experience/" },
+  { label: "Education", href: "/education/" },
+  { label: "Skills", href: "/skills/" },
 ];
+
+const isActive = (href) => Astro.url.pathname === href;
 ---
 
 <header class="site-nav-shell">
@@ -28,7 +30,7 @@ const links = [
 
     <div class="site-nav-links">
       {links.map((link) => (
-        <a href={link.href} data-nav-section={link.section} class="nav-link">
+        <a href={link.href} class:list={["nav-link", { "is-active": isActive(link.href) }]}>
           {link.label}
         </a>
       ))}
@@ -40,8 +42,7 @@ const links = [
           {links.map((link, index) => (
             <a
               href={link.href}
-              data-nav-section={link.section}
-              class="mobile-nav-link"
+              class:list={["mobile-nav-link", { "is-active": isActive(link.href) }]}
               data-mobile-nav-link
               style={`--mobile-link-delay:${index * 80}ms;`}
             >

@@ -1,7 +1,7 @@
 ---
 name: "Julius Maliwat"
-homeGreeting: "hello, i'm julius :)"
-headline: "Data Engineer @ Quantyca"
+homeGreeting: "hi i'm julius"
+headline: "data engineer @ quantyca"
 location: "Milan, Italy"
 email: "juliusmaliwat.work@gmail.com"
 links:
