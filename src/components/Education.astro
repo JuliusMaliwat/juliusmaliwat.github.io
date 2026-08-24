@@ -3,6 +3,7 @@
 // Row layout matches Experience: institution/title on the left, dates aligned right on the same line.
 const msc = {
   dates: "oct 2023 - oct 2025",
+  location: "Milan, Italy",
   text: "m.sc in data science, completed while working full-time.",
   thesisLabel: "multi-camera multi-object tracking",
   thesisUrl: "https://github.com/JuliusMaliwat/msc-thesis",
@@ -11,6 +12,7 @@ const msc = {
 
 const bsc = {
   dates: "oct 2020 - jul 2023",
+  location: "Milan, Italy",
   text: "b.sc in statistics.",
   thesisLabel: "ml for meta-analysis in clinical settings",
   thesisUrl: "https://github.com/JuliusMaliwat/bachelor-thesis",
@@ -24,6 +26,7 @@ const bsc = {
         <p class="edu-title"><strong>Bicocca</strong> — {msc.text}</p>
         <p class="edu-dates">{msc.dates}</p>
       </div>
+      <p class="edu-location">{msc.location}</p>
       <p class="cv-row-tag">
         110/110 with honors · thesis: <a class="inline-link" href={msc.thesisUrl} target="_blank" rel="noreferrer">{msc.thesisLabel}</a> ·{" "}
         <a class="inline-link" href={msc.projectsUrl} target="_blank" rel="noreferrer">projects</a>
@@ -35,6 +38,7 @@ const bsc = {
         <p class="edu-title"><strong>Bicocca</strong> — {bsc.text}</p>
         <p class="edu-dates">{bsc.dates}</p>
       </div>
+      <p class="edu-location">{bsc.location}</p>
       <p class="cv-row-tag">
         110/110 with honors · thesis: <a class="inline-link" href={bsc.thesisUrl} target="_blank" rel="noreferrer">{bsc.thesisLabel}</a>
       </p>
@@ -70,5 +74,11 @@ const bsc = {
 
   .edu-row .cv-row-tag {
     margin-top: 6px;
+  }
+
+  .edu-location {
+    margin-top: 2px;
+    font-size: 0.85rem;
+    color: var(--muted);
   }
 </style>

@@ -1,11 +1,12 @@
 ---
 // Experience section: flat list of roles, no accordion, no logos.
-// Row layout: company/role on the left, dates aligned right on the same line.
+// Row layout: company/role on the left, dates aligned right on the same line, location below.
 const roles = [
   {
     company: "Quantyca",
     role: "data engineer",
     dates: "jun 2025 - present",
+    location: "Monza, Italy",
     text: "migrating autostrade per l'italia's data platform from aws to databricks, helping define the new setup.",
     tag: "databricks · aws · terraform · python",
   },
@@ -13,6 +14,7 @@ const roles = [
     company: "Softlab",
     role: "data engineer",
     dates: "jun 2024 - jun 2025",
+    location: "Milan, Italy",
     text: "built etl pipelines for fastweb on aws for reporting and dashboards.",
     tag: "aws · spark · python · sql",
   },
@@ -20,6 +22,7 @@ const roles = [
     company: "KPMG",
     role: "software engineer",
     dates: "jul 2023 - jun 2024",
+    location: "Milan, Italy",
     text: "built internal tools for audit teams.",
     tag: "python · javascript · react",
   },
@@ -34,6 +37,7 @@ const roles = [
           <p class="cvb-company">{role.company} <span class="cvb-role">— {role.role}</span></p>
           <p class="cvb-dates">{role.dates}</p>
         </div>
+        <p class="cvb-location">{role.location}</p>
         <p class="cvb-text">{role.text}</p>
         <p class="cvb-tag">{role.tag}</p>
       </div>
@@ -78,6 +82,12 @@ const roles = [
     font-size: 0.78rem;
     color: var(--muted);
     white-space: nowrap;
+  }
+
+  .cvb-location {
+    margin-top: 2px;
+    font-size: 0.85rem;
+    color: var(--muted);
   }
 
   .cvb-text {
