@@ -3,26 +3,26 @@
 // Row layout: company/role on the left, dates aligned right on the same line, location below.
 const roles = [
   {
-    company: "Quantyca",
+    company: "quantyca",
     role: "data engineer",
     dates: "jun 2025 - present",
-    location: "Monza, Italy",
+    location: "monza, italy",
     text: "migrating autostrade per l'italia's data platform from aws to databricks, helping define the new setup.",
     tag: "databricks · aws · terraform · python",
   },
   {
-    company: "Softlab",
+    company: "softlab",
     role: "data engineer",
     dates: "jun 2024 - jun 2025",
-    location: "Milan, Italy",
+    location: "milan, italy",
     text: "built etl pipelines for fastweb on aws for reporting and dashboards.",
     tag: "aws · spark · python · sql",
   },
   {
-    company: "KPMG",
+    company: "kpmg",
     role: "software engineer",
     dates: "jul 2023 - jun 2024",
-    location: "Milan, Italy",
+    location: "milan, italy",
     text: "built internal tools for audit teams.",
     tag: "python · javascript · react",
   },
@@ -34,7 +34,7 @@ const roles = [
     {roles.map((role) => (
       <div class="cvb-row">
         <div class="cvb-head">
-          <p class="cvb-company">{role.company} <span class="cvb-role">— {role.role}</span></p>
+          <p class="cvb-company">{role.company} <span class="cvb-role">- {role.role}</span></p>
           <p class="cvb-dates">{role.dates}</p>
         </div>
         <p class="cvb-location">{role.location}</p>

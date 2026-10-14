@@ -1,6 +1,8 @@
 ---
-// Base layout: handles metadata, global styles, and shared structure.
+// Base layout: metadata, global styles, and the shared nav + footer around each page.
 import "../styles/global.css";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from "../consts";
 
 const {
@@ -11,34 +13,14 @@ const {
 
 const pageTitle = title === SITE_TITLE ? SITE_TITLE : `${title} | ${SITE_TITLE}`;
 const canonical = new URL(Astro.url.pathname, SITE_URL).toString();
-const plausibleDomain = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN;
 ---
 
 <!doctype html>
-<html lang={lang} class="theme-pending">
+<html lang={lang}>
   <head>
-    <style>
-      html.theme-pending body {
-        visibility: hidden;
-      }
-    </style>
-    <noscript>
-      <style>
-        html.theme-pending body {
-          visibility: visible;
-        }
-      </style>
-    </noscript>
-    <script>
-      (function () {
-        document.documentElement.dataset.theme = "light";
-        document.documentElement.style.colorScheme = "light";
-        document.documentElement.dataset.themeReady = "true";
-        document.documentElement.classList.remove("theme-pending");
-      })();
-    </script>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
@@ -57,17 +39,12 @@ const plausibleDomain = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN;
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
 
-    <!-- Optional analytics (set PUBLIC_PLAUSIBLE_DOMAIN in .env) -->
-    {plausibleDomain && (
-      <script
-        defer
-        data-domain={plausibleDomain}
-        src="https://plausible.io/js/script.js"
-      ></script>
-    )}
-
   </head>
   <body>
-    <slot />
+    <main class="page">
+      <Nav />
+      <slot />
+      <Footer />
+    </main>
   </body>
 </html>

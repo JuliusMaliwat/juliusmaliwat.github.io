@@ -1,17 +1,8 @@
 ---
-// Footer with contact links and anchor target for one-page navigation.
-const { email, links = [] } = Astro.props;
-
-const normalizeLabel = (value = "") => value.toLowerCase();
-const findLink = (label) =>
-  links.find((link) => normalizeLabel(link.label) === normalizeLabel(label))?.url;
-
-const mailto = email ? `mailto:${email}` : "mailto:juliusmaliwat.work@gmail.com";
-const githubUrl = findLink("GitHub");
-const linkedinUrl = findLink("LinkedIn");
+import { EMAIL, GITHUB_URL, LINKEDIN_URL } from "../consts";
 ---
 
-<footer id="contact" class="site-footer" aria-label="Contact links">
+<footer class="site-footer" aria-label="Contact links">
   <div class="site-footer-inner">
     <div class="site-footer-signature">
       <p class="site-footer-title">connect</p>
@@ -19,17 +10,9 @@ const linkedinUrl = findLink("LinkedIn");
     </div>
 
     <div class="site-footer-links">
-      <a class="footer-link" href={mailto}>Email</a>
-      {githubUrl && (
-        <a class="footer-link" href={githubUrl} target="_blank" rel="noreferrer">
-          GitHub
-        </a>
-      )}
-      {linkedinUrl && (
-        <a class="footer-link" href={linkedinUrl} target="_blank" rel="noreferrer">
-          LinkedIn
-        </a>
-      )}
+      <a class="footer-link" href={`mailto:${EMAIL}`}>email</a>
+      <a class="footer-link" href={GITHUB_URL} target="_blank" rel="noreferrer">github</a>
+      <a class="footer-link" href={LINKEDIN_URL} target="_blank" rel="noreferrer">linkedin</a>
       <a class="footer-link" href="/cv.pdf" target="_blank" rel="noreferrer">cv</a>
     </div>
   </div>

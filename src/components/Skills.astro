@@ -1,44 +1,26 @@
 ---
-// Skills section: typography-first, grouped by category, no icons.
-import { getCollection } from "astro:content";
-
-const skills = await getCollection("skills");
-
-const skillCategoryOrder = [
-  "Programming & Development",
-  "Data Science, AI & Analytics",
-  "Data Engineering & Cloud",
+const groups = [
+  { category: "programming & development", items: ["python", "sql", "javascript", "r", "git"] },
+  { category: "data science, ai & analytics", items: ["tensorflow", "pytorch", "scikit-learn", "pandas", "tableau"] },
+  { category: "data engineering & cloud", items: ["spark", "aws", "databricks"] },
 ];
 
-const groupedSkills = skillCategoryOrder
-  .map((category) => ({
-    category,
-    items: skills
-      .filter((entry) => entry.data.category === category)
-      .sort(
-        (a, b) =>
-          (a.data.order ?? Number.MAX_SAFE_INTEGER) -
-            (b.data.order ?? Number.MAX_SAFE_INTEGER) || a.data.name.localeCompare(b.data.name)
-      ),
-  }))
-  .filter((group) => group.items.length > 0);
-
 const certifications = [
-  "Databricks Certified Data Engineer Associate (jan 2026)",
-  "Microsoft Certified: Azure Fundamentals (oct 2026)",
+  "databricks certified data engineer associate (jan 2026)",
+  "microsoft certified: azure fundamentals (oct 2026)",
 ];
 ---
 
 <section id="skills" class="section-block">
   <div class="skills-groups">
-    {groupedSkills.map((group) => (
+    {groups.map((group) => (
       <p class="skills-group">
         <strong>{group.category}:</strong>
-        {group.items.map((skill) => skill.data.name).join(", ")}
+        {group.items.join(", ")}
       </p>
     ))}
     <p class="skills-group">
-      <strong>Certifications:</strong>
+      <strong>certifications:</strong>
       {certifications.map((c) => (
         <>
           <br />

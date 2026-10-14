@@ -5,14 +5,11 @@
   --bg: #fff;
   --text: #171717;
   --muted: color-mix(in srgb, var(--text) 65%, var(--bg));
-  --line: currentColor;
   --accent: currentColor;
   --max-width: 900px;
-  --space-1: 8px;
   --space-2: 16px;
   --space-3: 28px;
   --space-4: 40px;
-  --space-5: 64px;
   --space-6: 16px;
   --space-7: 24px;
   --motion-fast: 160ms;
@@ -43,29 +40,8 @@ body {
   line-height: 1.5;
 }
 
-h1,
-h2,
-h3,
-h4 {
-  margin: 0;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-}
-
 strong {
   font-weight: 600;
-}
-
-h1 {
-  font-size: 1.9rem;
-  font-weight: 600;
-}
-
-h2 {
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--muted);
 }
 
 p {
@@ -106,7 +82,7 @@ main.page {
 }
 
 .section-block {
-  padding: var(--space-6) 0;
+  padding: calc(var(--space-6) + var(--space-3)) 0 var(--space-6);
 }
 
 /* ---------- Nav ---------- */
@@ -174,12 +150,12 @@ main.page {
 .site-footer-title {
   margin-bottom: 4px;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.875rem;
 }
 
 .site-footer-signature p {
   margin: 0;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
 }
 
 .site-footer-links {
@@ -187,18 +163,16 @@ main.page {
   gap: 18px;
   flex-wrap: wrap;
   align-items: center;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
 }
 
 .footer-link {
   color: var(--muted);
-  border-bottom: 1px solid transparent;
-  transition: color var(--motion-fast) var(--ease-standard), border-color var(--motion-fast) var(--ease-standard);
+  text-decoration: underline;
 }
 
 .footer-link:hover {
   color: var(--text);
-  border-color: var(--text);
 }
 
 /* ---------- Home hero ---------- */
@@ -223,7 +197,6 @@ main.page {
 /* ---------- Skills ---------- */
 
 .skills-groups {
-  margin-top: var(--space-3);
   display: grid;
   gap: 1.25rem;
 }
@@ -258,7 +231,7 @@ main.page {
   }
 
   .section-block {
-    padding-top: 36px;
+    padding-top: 40px;
     padding-bottom: 36px;
   }
 }

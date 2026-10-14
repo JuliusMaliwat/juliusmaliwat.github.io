@@ -1,13 +1,12 @@
 ---
 // Top navigation: brand link back to home, plus links to each dedicated page.
-// Always expanded, even on mobile — no hamburger, matching marmikpatel.com.
+// Always expanded, even on mobile, no hamburger, matching marmikpatel.com.
 const links = [
   { label: "Experience", href: "/experience/" },
   { label: "Education", href: "/education/" },
   { label: "Skills", href: "/skills/" },
 ];
 
-const isActive = (href) => Astro.url.pathname === href;
 ---
 
 <header class="site-nav-shell">
@@ -18,7 +17,7 @@ const isActive = (href) => Astro.url.pathname === href;
 
     <div class="site-nav-links">
       {links.map((link) => (
-        <a href={link.href} class:list={["nav-link", { "is-active": isActive(link.href) }]}>
+        <a href={link.href} class="nav-link">
           {link.label}
         </a>
       ))}
