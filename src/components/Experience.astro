@@ -42,13 +42,6 @@ const roles = [
         <p class="cvb-tag">{role.tag}</p>
       </div>
     ))}
-    <div class="cvb-row">
-      <div class="cvb-head">
-        <p class="cvb-company">Certifications</p>
-        <p class="cvb-dates">jan 2026</p>
-      </div>
-      <p class="cvb-text">databricks certified data engineer associate</p>
-    </div>
   </div>
 </section>
 
@@ -68,25 +61,23 @@ const roles = [
   }
 
   .cvb-company {
-    font-size: 1.05rem;
-    font-weight: 700;
+    font-weight: 600;
   }
 
   .cvb-role {
     font-weight: 400;
-    color: var(--muted);
+    color: var(--text);
   }
 
   .cvb-dates {
-    font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-    font-size: 0.78rem;
+    font-size: 0.875rem;
     color: var(--muted);
     white-space: nowrap;
   }
 
   .cvb-location {
+    font-size: 0.875rem;
     margin-top: 2px;
-    font-size: 0.85rem;
     color: var(--muted);
   }
 
@@ -96,9 +87,8 @@ const roles = [
   }
 
   .cvb-tag {
+    font-size: 0.875rem;
     margin-top: 8px;
-    font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-    font-size: 0.78rem;
     color: var(--muted);
   }
 </style>

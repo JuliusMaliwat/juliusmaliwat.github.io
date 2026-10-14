@@ -22,19 +22,29 @@ const groupedSkills = skillCategoryOrder
       ),
   }))
   .filter((group) => group.items.length > 0);
+
+const certifications = [
+  "Databricks Certified Data Engineer Associate (jan 2026)",
+  "Microsoft Certified: Azure Fundamentals (oct 2026)",
+];
 ---
 
 <section id="skills" class="section-block">
   <div class="skills-groups">
     {groupedSkills.map((group) => (
-      <div class="skills-group">
-        <div class="eyebrow">{group.category}</div>
-        <div class="skills-grid skills-grid--text">
-          {group.items.map((skill) => (
-            <span class="skill-text">{skill.data.name}</span>
-          ))}
-        </div>
-      </div>
+      <p class="skills-group">
+        <strong>{group.category}:</strong>
+        {group.items.map((skill) => skill.data.name).join(", ")}
+      </p>
     ))}
+    <p class="skills-group">
+      <strong>Certifications:</strong>
+      {certifications.map((c) => (
+        <>
+          <br />
+          {c}
+        </>
+      ))}
+    </p>
   </div>
 </section>

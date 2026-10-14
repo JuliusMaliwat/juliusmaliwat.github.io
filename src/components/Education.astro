@@ -4,7 +4,8 @@
 const msc = {
   dates: "oct 2023 - oct 2025",
   location: "Milan, Italy",
-  text: "m.sc in data science, completed while working full-time.",
+  text: "m.sc in data science.",
+  note: "completed while working full-time",
   thesisLabel: "multi-camera multi-object tracking",
   thesisUrl: "https://github.com/JuliusMaliwat/msc-thesis",
   projectsUrl: "https://github.com/JuliusMaliwat/msc-data-science-projects",
@@ -26,7 +27,7 @@ const bsc = {
         <p class="edu-title"><strong>Bicocca</strong> — {msc.text}</p>
         <p class="edu-dates">{msc.dates}</p>
       </div>
-      <p class="edu-location">{msc.location}</p>
+      <p class="edu-location">{msc.location} · {msc.note}</p>
       <p class="cv-row-tag">
         110/110 with honors · thesis: <a class="inline-link" href={msc.thesisUrl} target="_blank" rel="noreferrer">{msc.thesisLabel}</a> ·{" "}
         <a class="inline-link" href={msc.projectsUrl} target="_blank" rel="noreferrer">projects</a>
@@ -66,8 +67,7 @@ const bsc = {
   }
 
   .edu-dates {
-    font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-    font-size: 0.8rem;
+    font-size: 0.875rem;
     color: var(--muted);
     white-space: nowrap;
   }
@@ -77,8 +77,8 @@ const bsc = {
   }
 
   .edu-location {
+    font-size: 0.875rem;
     margin-top: 2px;
-    font-size: 0.85rem;
     color: var(--muted);
   }
 </style>
